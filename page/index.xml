@@ -2,33 +2,36 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Pages on PanDapao</title>
-        <link>http://localhost:1313/page/</link>
+        <link>https://pkfbc2014.github.io/page/</link>
         <description>Recent content in Pages on PanDapao</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>PanDapao</copyright>
-        <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/page/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://pkfbc2014.github.io/page/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>归档</title>
-        <link>http://localhost:1313/archives/</link>
+        <link>https://pkfbc2014.github.io/archives/</link>
         <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/archives/</guid>
+        <guid>https://pkfbc2014.github.io/archives/</guid>
         <description></description>
         </item>
         <item>
         <title>关于</title>
-        <link>http://localhost:1313/%E5%85%B3%E4%BA%8E/</link>
+        <link>https://pkfbc2014.github.io/%E5%85%B3%E4%BA%8E/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/%E5%85%B3%E4%BA%8E/</guid>
+        <guid>https://pkfbc2014.github.io/%E5%85%B3%E4%BA%8E/</guid>
         <description>&lt;h2 id=&#34;介绍&#34;&gt;介绍
-&lt;/h2&gt;&lt;p&gt;很高兴认识你，我的朋友😉。我的昵称是潘大炮。我目前就读于&lt;strong&gt;中国科学院计算机网络信息中心&lt;/strong&gt;，是一名计算机软件与理论专业的研究生💻. 这个网站有关于我的一切。&lt;/p&gt;
+&lt;/h2&gt;&lt;p&gt;很高兴认识你，我的朋友😉。我的昵称是潘大炮。我目前就读于&lt;strong&gt;中国科学院计算机网络信息中心&lt;/strong&gt;，是一名计算机软件与理论专业的研究生💻。这个网站有关于我的一切。&lt;/p&gt;
 &lt;p&gt;我从2014年就开始接触电脑了，从那以后已经快十年了。我参加过&lt;strong&gt;NOIP&lt;/strong&gt;，但成绩平平。上大学后，我的方向从竞争转向了科学研究。我发现只有在&lt;strong&gt;科研&lt;/strong&gt;我才能全身心投入，我也喜欢这个工作。🎈&lt;/p&gt;
 &lt;p&gt;目前，我的研究方向是&lt;strong&gt;量子计算、高性能计算、量子化学和机器学习&lt;/strong&gt;，我的目标是寻求量子计算机和经典计算机相结合的可能性，为人工智能提供更强大的计算能力和应用基础。我还处于起步阶段，对这个领域知之甚少。我希望在这个领域与强者合作。非常感谢。&lt;/p&gt;
 &lt;h2 id=&#34;学习经历&#34;&gt;学习经历
 &lt;/h2&gt;&lt;p&gt;2016 - 2019，高中生，柳州铁一中学&lt;/p&gt;
 &lt;p&gt;2019 - 2023，本科生，吉林大学&lt;/p&gt;
 &lt;p&gt;2024 - 现在，硕士研究生，中国科学院计算机网络信息中心&lt;/p&gt;
+&lt;h2 id=&#34;联系方式&#34;&gt;联系方式
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;WeChat：&lt;/strong&gt; zhanxin1218&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Email：&lt;/strong&gt; &lt;a class=&#34;link&#34; href=&#34;mailto:pankaifan24@mails.ucas.ac.cn&#34; &gt;pankaifan24@mails.ucas.ac.cn&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;联系地址&#34;&gt;联系地址
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;地址 1：&lt;/strong&gt; 广西壮族自治区柳州市柳南区城站路391号，545007&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;地址 2：&lt;/strong&gt; 吉林省长春市前进大街2699号，130012&lt;/p&gt;
@@ -37,18 +40,18 @@
         </item>
         <item>
         <title>搜索</title>
-        <link>http://localhost:1313/search/</link>
+        <link>https://pkfbc2014.github.io/search/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/search/</guid>
+        <guid>https://pkfbc2014.github.io/search/</guid>
         <description></description>
         </item>
         <item>
         <title>友情链接</title>
-        <link>http://localhost:1313/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/</link>
+        <link>https://pkfbc2014.github.io/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/</guid>
+        <guid>https://pkfbc2014.github.io/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/</guid>
         <description>&lt;p&gt;To use this feature, add &lt;code&gt;links&lt;/code&gt; section to frontmatter.&lt;/p&gt;
 &lt;p&gt;This page&amp;rsquo;s frontmatter:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
