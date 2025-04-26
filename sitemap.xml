@@ -11,7 +11,7 @@
     <loc>http://localhost:1313/categories/</loc>
     <lastmod>2021-08-01T21:29:20+02:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/blog/2021/08/01/categories-post/</loc>
+    <loc>http://localhost:1313/blog/2021/08/01/lysandra-vael/</loc>
     <lastmod>2021-08-01T21:29:20+02:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/golang/</loc>
@@ -44,26 +44,17 @@
     <loc>http://localhost:1313/</loc>
     <lastmod>2021-08-01T21:29:20+02:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/authors/jane-doe/</loc>
+    <loc>http://localhost:1313/blog/2015/10/02/evander-cade/</loc>
     <lastmod>2015-10-02T21:49:20+02:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/blog/2015/10/02/linked-post/</loc>
+    <loc>http://localhost:1313/authors/jane-doe/</loc>
     <lastmod>2015-10-02T21:49:20+02:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/go/</loc>
     <lastmod>2015-09-17T13:47:08+02:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/blog/2015/09/17/go-is-for-lovers/</loc>
+    <loc>http://localhost:1313/blog/2015/09/17/seraphine-marlowe/</loc>
     <lastmod>2015-09-17T13:47:08+02:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/blog/2015/08/03/hugo-is-for-lovers/</loc>
-    <lastmod>2015-08-03T13:39:46+02:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/blog/2015/06/24/creating-a-new-theme/</loc>
-    <lastmod>2015-06-24T13:50:46+02:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/starting/</loc>
-    <lastmod>2015-06-24T13:50:46+02:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/contact/</loc>
   </url><url>
@@ -71,6 +62,6 @@
   </url><url>
     <loc>http://localhost:1313/tags/ipsum/</loc>
   </url><url>
-    <loc>http://localhost:1313/blog/1/01/01/migrate-from-jekyll/</loc>
+    <loc>http://localhost:1313/blog/1/01/01/zephyr-thorne/</loc>
   </url>
 </urlset>
