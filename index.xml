@@ -44,11 +44,11 @@
       <description>Introduction This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&amp;rsquo;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&amp;rsquo;t cover using CSS to style your theme.&#xA;We&amp;rsquo;ll start with creating a new site with a very basic template.</description>
     </item>
     <item>
-      <title>Contact</title>
+      <title>About us</title>
       <link>http://localhost:1313/contact/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/contact/</guid>
-      <description>We are here to help you Are you curious about something? Do you have some kind of problem with our products? As am hastily invited settled at limited civilly fortune me. Really spring in extent an by. Judge but built gay party world. Of so am he remember although required. Bachelor unpacked be advanced at. Confined in declared marianne is vicinity.&#xA;Please feel free to contact us, our customer service center is working for you 24/7.</description>
+      <description>Description Pandapao was founded in 2025, focusing on building the next generation of artificial intelligence core engines. It is committed to reconstructing human-machine collaboration through AI technology and empowering intelligent upgrades in various industries. As one of the first innovative enterprises in China to achieve dual wheel drive of &amp;ldquo;multimodal AI engine+industry knowledge base&amp;rdquo;, we provide full stack AI solutions for fields such as finance, healthcare, education, and intelligent manufacturing with AIGC (Generative AI), intelligent decision-making, and automated machine learning as our core.</description>
     </item>
     <item>
       <title>FAQ</title>
