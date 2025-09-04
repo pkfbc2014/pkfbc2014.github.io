@@ -8,12 +8,1704 @@
         <language>zh-cn</language>
         <copyright>KaifanPan</copyright>
         <lastBuildDate>Wed, 09 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>20250827 星期三</title>
+        <link>http://localhost:1313/p/test-chinese/</link>
+        <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/test-chinese/</guid>
+        <description>&lt;h1 id=&#34;20250827-星期三&#34;&gt;20250827 星期三
+&lt;/h1&gt;&lt;h2 id=&#34;一无线通信&#34;&gt;一、无线通信
+&lt;/h2&gt;&lt;h3 id=&#34;1-aoa入射角&#34;&gt;1. AoA（入射角）
+&lt;/h3&gt;&lt;h4 id=&#34;原理&#34;&gt;原理
+&lt;/h4&gt;&lt;p&gt;无线信号到达一个天线阵列时，不同天线接收到的信号相位会有差异。
+利用这些相位差，就可以估算出信号的到达方向（即入射角）。&lt;/p&gt;
+&lt;h4 id=&#34;举例&#34;&gt;举例
+&lt;/h4&gt;&lt;p&gt;假设有一排天线（阵列），间距已知。
+如果信号正面垂直入射，所有天线接收的信号相位相同。
+如果信号斜着来，相邻天线会有时间差/相位差。
+通过测量这个相位差，就能计算出角度。&lt;/p&gt;
+&lt;h4 id=&#34;公式&#34;&gt;公式
+&lt;/h4&gt;$$
+\Delta \phi = \frac{2\pi d \sin(\theta)}{\lambda}
+$$&lt;p&gt;
+其中：
+$d$：天线间距；$\lambda$：信号波长；$\theta$：信号入射角&lt;/p&gt;
+&lt;h3 id=&#34;2-tof飞行时间&#34;&gt;2. ToF（飞行时间）
+&lt;/h3&gt;&lt;h4 id=&#34;原理-1&#34;&gt;原理
+&lt;/h4&gt;&lt;p&gt;无线信号从发射端到接收端需要一定时间（传播延迟）。
+如果我们知道信号传播速度（在空气中大约是光速 $c = 3 \times 10^8 , m/s$），就能通过测量延迟计算距离。&lt;/p&gt;
+&lt;h4 id=&#34;举例-1&#34;&gt;举例
+&lt;/h4&gt;&lt;p&gt;假设 WiFi 发一个脉冲，接收端检测到它花了 &lt;strong&gt;10ns&lt;/strong&gt; 才到达：
+&lt;/p&gt;
+$$
+d = c \times t = 3 \times 10^8 \times 10^{-8} = 3 \, m
+$$&lt;p&gt;
+这说明信号传播距离是 3 米。&lt;/p&gt;
+&lt;h3 id=&#34;3-区别和应用&#34;&gt;3. 区别和应用
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;AoA&lt;/strong&gt;：给你方向，但不直接给距离。常用于 &lt;strong&gt;三角定位&lt;/strong&gt;（多天线接收 + 三角交点求位置）。
+&lt;strong&gt;ToF&lt;/strong&gt;：给你距离，但不直接给方向。常用于 &lt;strong&gt;多基站测距 + 交点求位置&lt;/strong&gt;。
+两者结合（AoA + ToF），可以提高定位精度。&lt;/p&gt;
+&lt;h4 id=&#34;关键点&#34;&gt;关键点
+&lt;/h4&gt;&lt;p&gt;AoA 依赖 &lt;strong&gt;多天线阵列&lt;/strong&gt;，需要空间分辨率。
+ToF 依赖 &lt;strong&gt;精确时间同步/带宽&lt;/strong&gt;，因为 1ns 的误差就对应 &lt;strong&gt;30cm&lt;/strong&gt; 的定位误差。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;二foldseek&#34;&gt;二、foldseek
+&lt;/h2&gt;&lt;p&gt;使用教程：&lt;a class=&#34;link&#34; href=&#34;https://www.bilibili.com/video/BV1eV7TzBEPg/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Foldseek教程和介绍&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Foldseek&lt;/strong&gt; 是一个用于快速比较蛋白质三维结构（folds）的方法和工具。它的核心作用是： &lt;strong&gt;高效查找并比对蛋白质的结构相似性&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;背景知识&#34;&gt;背景知识
+&lt;/h3&gt;&lt;p&gt;传统上，蛋白质结构比对（例如用 TM-align、DALI、CE）&lt;strong&gt;非常耗时&lt;/strong&gt;，因为它们要处理复杂的三维坐标和空间对齐问题。
+随着 AlphaFold2 等工具预测出了大量蛋白质结构（甚至全基因组水平），我们就需要一种&lt;strong&gt;更快&lt;/strong&gt;的结构比对方法 —— &lt;strong&gt;Foldseek&lt;/strong&gt; 就是为此而设计的。&lt;/p&gt;
+&lt;h3 id=&#34;foldseek-的核心思路&#34;&gt;Foldseek 的核心思路
+&lt;/h3&gt;&lt;p&gt;Foldseek 的创新点是：&lt;strong&gt;把蛋白质结构转化为“序列”（一种表示结构的离散符号序列）&lt;/strong&gt;，然后使用类似 BLAST 的方法进行比对。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;结构编码（Discretization）&lt;/strong&gt;：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;它把蛋白质结构中的每个残基的几何环境，用一个&lt;strong&gt;结构状态符号&lt;/strong&gt;表示（比如 A, B, C, &amp;hellip;, Z），就像蛋白质序列那样。&lt;/li&gt;
+&lt;li&gt;这就将结构比对问题转化为了“序列比对”问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;&lt;strong&gt;快速比对算法&lt;/strong&gt;：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;使用经过优化的比对算法，类似于 MMseqs2 的原理（Foldseek 的作者也开发了 MMseqs2）。&lt;/li&gt;
+&lt;li&gt;支持&lt;strong&gt;大规模数据库检索&lt;/strong&gt;，比如搜索整个 PDB 或 AlphaFold 数据库中的相似结构。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;&lt;strong&gt;结果评分&lt;/strong&gt;：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;使用类似 TM-score 的指标，衡量两个结构的相似程度。&lt;/li&gt;
+&lt;li&gt;输出显著性评分（E-value）来评估结构相似性是否具有统计学意义。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;应用场景&#34;&gt;应用场景
+&lt;/h3&gt;&lt;p&gt;在 AlphaFold 或 RoseTTAFold 等预测出来的结构中：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;搜索与某结构相似的其他结构（结构同源性）&lt;/li&gt;
+&lt;li&gt;结构功能注释&lt;/li&gt;
+&lt;li&gt;结构聚类分析
+分析新蛋白质结构是否与已知结构相似，从而推断其功能或演化关系&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;官网和工具资源&#34;&gt;官网和工具资源
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://foldseek.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;官网/说明文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/steineggerlab/foldseek&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Github地址&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;foldseek-的结构状态符号种类&#34;&gt;Foldseek 的结构状态符号种类
+&lt;/h3&gt;&lt;p&gt;Foldseek 的 3Di 字母表包含 20 种结构状态符号。
+每个符号代表一种常见的几何构型（例如特定的主链-主链对接类型、氢键模式、空间关系等），就像用离散字母近似连续空间的构象。&lt;/p&gt;
+&lt;h3 id=&#34;背后原理简略版&#34;&gt;背后原理（简略版）
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;提取邻近残基对的结构关系（基于 backbone 原子，通常是 Cα-Cα 距离）；&lt;/li&gt;
+&lt;li&gt;对这些几何描述向量做聚类（或分类），形成 20 类代表性状态；&lt;/li&gt;
+&lt;li&gt;每个残基被赋予一个 3Di 状态字母（0 到 19），就像一维序列一样。
+这就将原本连续的 3D 结构 → 离散的符号序列（类似蛋白质的“结构序列”）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;类比&#34;&gt;类比
+&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;原始结构信息&lt;/th&gt;
+          &lt;th&gt;Foldseek 表示方法&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;蛋白质序列（AAs）&lt;/td&gt;
+          &lt;td&gt;20 个氨基酸字母&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;蛋白质结构（三维坐标）&lt;/td&gt;
+          &lt;td&gt;20 个结构状态字母（3Di）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;这使得 Foldseek 可以用非常快的序列比对方法（如 BLAST 或 MMseqs2）来做结构比对。&lt;/td&gt;
+          &lt;td&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;补充为什么是-20-种&#34;&gt;补充：为什么是 20 种？
+&lt;/h3&gt;&lt;p&gt;实验发现：用 20 类 3Di 状态已经能捕捉到足够的几何多样性，同时保持比对速度和准确率；
+这也使得 Foldseek 的结构表示长度与原始氨基酸序列长度一致（每个残基一个符号）；
+便于与其他工具（比如序列比对、数据库索引）协同使用。&lt;/p&gt;
+&lt;h2 id=&#34;三pdb文件&#34;&gt;三、PDB文件
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;PDB 文件&lt;/strong&gt;指的是 &lt;strong&gt;Protein Data Bank 文件&lt;/strong&gt;，它是描述生物大分子（如蛋白质、DNA、RNA、小分子配体等）三维结构的&lt;strong&gt;标准文件格式&lt;/strong&gt;。
+PDB 是 &lt;strong&gt;蛋白质结构数据库 Protein Data Bank&lt;/strong&gt; 的简称（&lt;a class=&#34;link&#34; href=&#34;http://www.rcsb.org&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;www.rcsb.org&lt;/a&gt;），最早由 Brookhaven National Laboratory 在 1971 年创建。&lt;/p&gt;
+&lt;h3 id=&#34;pdb-文件的作用&#34;&gt;PDB 文件的作用
+&lt;/h3&gt;&lt;p&gt;存储蛋白质、核酸、复合物的 &lt;strong&gt;三维坐标信息&lt;/strong&gt;；
+记录每个原子的 &lt;strong&gt;原子序号、原子名、残基名、残基编号、坐标 (x,y,z)、占有率、B 因子&lt;/strong&gt; 等；
+提供结构注释，例如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;氨基酸序列&lt;/li&gt;
+&lt;li&gt;二级结构（α 螺旋、β 折叠）&lt;/li&gt;
+&lt;li&gt;化学配体、金属离子结合信息&lt;/li&gt;
+&lt;li&gt;实验方法（X 射线衍射、NMR、冷冻电镜）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pdb-文件的基本内容&#34;&gt;PDB 文件的基本内容
+&lt;/h3&gt;&lt;p&gt;一个典型的 PDB 文件是 &lt;strong&gt;纯文本文件&lt;/strong&gt;，主要由多行记录组成，每行前几个字符表示行的类型。&lt;/p&gt;
+&lt;p&gt;示例（截取自 PDB ID: &lt;code&gt;1CRN&lt;/code&gt;，即 crambin 蛋白）：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;HEADER    PLANT SEED PROTEIN                     07-JUL-83   1CRN
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;TITLE     CRAMBIN
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;EXPDTA    X-RAY DIFFRACTION
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ATOM      1  N   THR A   1      24.456  24.950   2.000  1.00 13.79           N
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ATOM      2  CA  THR A   1      23.123  24.521   2.200  1.00 14.45           C
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ATOM      3  C   THR A   1      22.800  23.050   2.600  1.00 14.20           C
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ATOM      4  O   THR A   1      23.456  22.100   2.100  1.00 15.30           O
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;TER
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;END
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;解释：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;HEADER&lt;/code&gt;：基本信息（分类、发布日期、PDB ID）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;TITLE&lt;/code&gt;：结构的标题&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;EXPDTA&lt;/code&gt;：实验方法（这里是 X-ray）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;ATOM&lt;/code&gt;：每一行描述一个原子的三维坐标&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;第 1 个原子：N 原子（氨基氮），属于 &lt;strong&gt;THR 残基&lt;/strong&gt;，在链 A 的第 1 位，坐标是 (24.456, 24.950, 2.000)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;TER&lt;/code&gt;：链结束&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;END&lt;/code&gt;：文件结束&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;pdb-文件的用途&#34;&gt;PDB 文件的用途
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;科研&lt;/strong&gt;：蛋白质结构分析、药物设计、分子对接、分子动力学模拟&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据库检索&lt;/strong&gt;：从 RCSB PDB 或 AlphaFold DB 下载结构数据&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可视化&lt;/strong&gt;：用 PyMOL、Chimera、VMD 等软件打开 PDB 文件，查看 3D 结构&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;计算模拟输入&lt;/strong&gt;：作为分子动力学模拟（如 GROMACS、AMBER）或量子化学计算（如 Gaussian、ORCA）的输入文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;总结：
+PDB 文件就是用来描述 &lt;strong&gt;生物大分子三维结构的标准文本文件&lt;/strong&gt;，它相当于“结构坐标表”，在生物信息学、结构生物学和计算化学中被广泛使用。&lt;/p&gt;
+&lt;h2 id=&#34;四量子态表示蛋白质的三个思路&#34;&gt;四、量子态表示蛋白质的三个思路
+&lt;/h2&gt;&lt;h3 id=&#34;1-为什么蛋白质难表示&#34;&gt;1. 为什么蛋白质难表示？
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;一个长度为 $n$ 的蛋白质有 $20^n$ 种氨基酸序列组合；&lt;/li&gt;
+&lt;li&gt;每个氨基酸有多个&lt;strong&gt;旋转角&lt;/strong&gt;（φ, ψ, χ），加上空间三维坐标，形成了&lt;strong&gt;高维连续空间&lt;/strong&gt;；&lt;/li&gt;
+&lt;li&gt;如果用经典方法表示结构，通常需要几千维的浮点数；&lt;/li&gt;
+&lt;li&gt;而一个量子态最多只能用 $2^N$ 个复数幅度表示（其中 $N$ 是量子比特数）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;结论&lt;/strong&gt;：蛋白质的维度是&lt;strong&gt;指数级超出&lt;/strong&gt;当前量子计算机能力的。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;2-当前的做法近似--编码&#34;&gt;2. 当前的做法：近似 + 编码
+&lt;/h3&gt;&lt;h4 id=&#34;方法-1简化后的二进制编码--quantum-machine-learning&#34;&gt;方法 1：&lt;strong&gt;简化后的二进制编码 + Quantum Machine Learning&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;将蛋白质用简化后的离散特征表示，如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;氨基酸类型：1-hot 编码（20种 → 5bit）&lt;/li&gt;
+&lt;li&gt;二级结构类型：3种（H, E, C）→ 2bit&lt;/li&gt;
+&lt;li&gt;二维接触图（contact map）：距离是否小于阈值 → 二值矩阵&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;然后将这些位图作为&lt;strong&gt;量子电路的输入&lt;/strong&gt;，例如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用量子态编码 1-hot 的特征；&lt;/li&gt;
+&lt;li&gt;通过参数化量子线路（PQC）进行学习；&lt;/li&gt;
+&lt;li&gt;典型应用：结构分类 / 结构预测 / 结构生成。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;示例：QFold、Quantum Net、QCBM 都是类似策略。&lt;/p&gt;
+&lt;h4 id=&#34;方法-2表示局部结构子集&#34;&gt;方法 2：&lt;strong&gt;表示局部结构子集&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;不表示整个蛋白质，而是表示它的&lt;strong&gt;局部结构片段&lt;/strong&gt;，比如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一个肽链片段（5-10 个氨基酸）；&lt;/li&gt;
+&lt;li&gt;一个功能域；&lt;/li&gt;
+&lt;li&gt;局部对接区域（如药物结合位点）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过降维（PCA, autoencoder）将这些结构映射到低维空间，再编码进量子态。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;方法-3基于变分量子算法vqa的学习优化&#34;&gt;方法 3：&lt;strong&gt;基于变分量子算法（VQA）的学习/优化&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;把蛋白质折叠问题转化为优化问题，例如能量最小化：&lt;/p&gt;
+$$
+  \min_{\theta} \langle \psi(\theta) | H | \psi(\theta) \rangle
+  $$&lt;ul&gt;
+&lt;li&gt;其中 $H$ 是能量哈密顿量，比如 Lennard-Jones 势能；&lt;/li&gt;
+&lt;li&gt;$\psi(\theta)$ 是参数化量子态；&lt;/li&gt;
+&lt;li&gt;用 VQE 或 QAOA 进行训练。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实际中可用于&lt;strong&gt;蛋白质折叠&lt;/strong&gt;、&lt;strong&gt;对接&lt;/strong&gt;、&lt;strong&gt;路径采样&lt;/strong&gt;等。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-案例qfold&#34;&gt;3. 案例：QFold
+&lt;/h3&gt;&lt;p&gt;QFold 是一个基于量子机器学习的蛋白质折叠预测模型（发表在 2021 年）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;用经典神经网络（或 LSTM）生成结构片段的概率；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;再用 &lt;strong&gt;量子玻尔兹曼机&lt;/strong&gt; 生成结构；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;利用量子态生成结构向量，如：&lt;/p&gt;
+$$
+  |\psi\rangle = \sum_x \sqrt{P(x)} |x\rangle
+  $$&lt;p&gt;表示结构空间的概率分布。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这类方法&lt;strong&gt;不是真的在量子态中直接编码蛋白质结构&lt;/strong&gt;，而是通过量子生成模型在&lt;strong&gt;结构的编码空间中建模&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结
+&lt;/h3&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;问题&lt;/th&gt;
+          &lt;th&gt;当前对策&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;蛋白质太大、太复杂&lt;/td&gt;
+          &lt;td&gt;降维 + 局部表示&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;量子比特太少&lt;/td&gt;
+          &lt;td&gt;用变分电路 + 混合算法&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;连续空间无法编码&lt;/td&gt;
+          &lt;td&gt;离散化为结构码（如接触图、1-hot）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;无法表示全局结构&lt;/td&gt;
+          &lt;td&gt;表示片段/功能域/接触对&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;五量子玻尔兹曼机&#34;&gt;五、量子玻尔兹曼机
+&lt;/h2&gt;&lt;p&gt;量子玻尔兹曼机（&lt;strong&gt;Quantum Boltzmann Machine, QBM&lt;/strong&gt;）是经典玻尔兹曼机（Boltzmann Machine, BM）在&lt;strong&gt;量子计算框架&lt;/strong&gt;下的一种推广。它是一类结合了&lt;strong&gt;量子统计力学&lt;/strong&gt;与&lt;strong&gt;机器学习&lt;/strong&gt;思想的生成模型。&lt;/p&gt;
+&lt;h3 id=&#34;1-背景经典玻尔兹曼机&#34;&gt;1. 背景：经典玻尔兹曼机
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;玻尔兹曼机&lt;/strong&gt;是能量模型（Energy-based Model, EBM）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;它定义了一个能量函数 $E(v,h)$，其中 $v$ 是可见变量（visible units），$h$ 是隐藏变量（hidden units）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;网络会根据玻尔兹曼分布&lt;/p&gt;
+$$
+  P(v,h) = \frac{e^{-E(v,h)}}{Z}, \quad Z = \sum_{v,h} e^{-E(v,h)}
+  $$&lt;p&gt;来表示数据的概率。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;学习过程就是调整参数，使得模型分布尽量拟合训练数据分布。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-量子玻尔兹曼机qbm的基本思想&#34;&gt;2. 量子玻尔兹曼机（QBM）的基本思想
+&lt;/h3&gt;&lt;p&gt;经典 BM 的能量函数是 &lt;strong&gt;实数标量&lt;/strong&gt;，但在量子力学中，能量对应的是 &lt;strong&gt;哈密顿量算符（Hamiltonian operator）&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;在 QBM 中：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;定义一个量子哈密顿量 $H$，例如&lt;/p&gt;
+$$
+  H = - \sum_i b_i \sigma_i^z - \sum_{i&lt;j} w_{ij} \sigma_i^z \sigma_j^z - \sum_i \Gamma_i \sigma_i^x
+  $$&lt;p&gt;其中 $\sigma^z, \sigma^x$ 是泡利矩阵。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;模型的概率分布来自于 &lt;strong&gt;量子热态密度矩阵&lt;/strong&gt;：&lt;/p&gt;
+$$
+  \rho = \frac{e^{-\beta H}}{Z}, \quad Z = \mathrm{Tr}(e^{-\beta H})
+  $$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;可见层的概率分布由&lt;/p&gt;
+$$
+  P(v) = \mathrm{Tr}_h \big( \langle v | \rho | v \rangle \big)
+  $$&lt;p&gt;得到（对隐藏量子态迹化）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;换句话说，经典 BM 是在经典热力学体系上的 Gibbs 分布，而 QBM 用的是量子统计力学的 Gibbs 态（热平衡密度矩阵）。&lt;/p&gt;
+&lt;h3 id=&#34;3-为什么引入量子&#34;&gt;3. 为什么引入量子？
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;更强的表达能力&lt;/strong&gt;：经典 BM 只能表示经典分布，而 QBM 能表示一些含有量子纠缠或非经典相关性的分布。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;训练加速&lt;/strong&gt;：利用量子退火器或量子电路，可以更快地采样热态分布，避免经典采样的“玻尔兹曼瓶颈”。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;物理动机&lt;/strong&gt;：量子系统本身就自然遵循 Gibbs 分布，因此用量子硬件实现 QBM 是物理上自然的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;4-实现方式&#34;&gt;4. 实现方式
+&lt;/h3&gt;&lt;p&gt;目前主要有两条思路：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;量子退火（Quantum Annealing）版本&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在 D-Wave 等量子退火机上实现 QBM，哈密顿量设计成 Ising 型。&lt;/li&gt;
+&lt;li&gt;通过调节横场参数 $\Gamma$ 来引入量子涨落。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;量子电路（Circuit-based QBM）版本&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用参数化量子电路（PQC）来近似制备 Gibbs 热态。&lt;/li&gt;
+&lt;li&gt;用于训练生成模型或混合量子-经典优化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;5-应用方向&#34;&gt;5. 应用方向
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;量子化学&lt;/strong&gt;：近似复杂的分子波函数（尤其在 CI、DMRG 之外的场景）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;机器学习&lt;/strong&gt;：作为生成模型，用于建模复杂数据分布。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;优化问题&lt;/strong&gt;：利用量子采样性质来加速组合优化。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>20250828 星期四</title>
+        <link>http://localhost:1313/p/test-chinese/</link>
+        <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/test-chinese/</guid>
+        <description>&lt;img src="http://localhost:1313/helena-hertz-wWZzXlDpMog-unsplash.jpg" alt="Featured image of post 20250828 星期四" /&gt;&lt;h1 id=&#34;20250828-星期四&#34;&gt;20250828 星期四
+&lt;/h1&gt;&lt;h2 id=&#34;一量子机器学习问题&#34;&gt;一、《量子机器学习》问题
+&lt;/h2&gt;&lt;p&gt;量子计算的书这样写道：
+量子K均值聚类算法与经典K均值聚类算法主要的不同在于量子K均值聚类算法使用交换测试计算样本与质心距离，因此只比较该步骤的复杂度。对于量子算法来说，由于交换测试要运行$O(1/k)$次才能以误差$\varepsilon$得到距离，因此要使用交换测试计算$M=2^m$维样本|xi&amp;gt;与质心|uk&amp;gt;的距离$F(|xi&amp;gt;, |uk&amp;gt;)$，其复杂度为$O(1/\varepsilon)*O(m)=O(m/\varepsilon)$，如果使用经典算法计算M维向量的内积，其复杂度为$O(2^m)$。因此复杂度呈现指数降低。&lt;/p&gt;
+&lt;p&gt;我对两个算法的时间复杂度有疑问，交换测试的时间复杂度不是根据逻辑门的个数来算的么？而且这只是交换测试部分，它根本没考虑制备量子态的过程，如果把制备量子态过程考虑上，时间复杂度是要高于经典时间复杂度。&lt;/p&gt;
+&lt;p&gt;现在我想确认的是：交换测试的时间复杂度是不是$O(m/\varepsilon)$？而且$\varepsilon$是一个很小很小的数，$m/\varepsilon$不一定比$2^m$小啊。&lt;/p&gt;
+&lt;h3 id=&#34;1-交换测试swap-test的复杂度怎么算&#34;&gt;1. 交换测试（Swap Test）的复杂度怎么算？
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;交换测试本身&lt;/strong&gt;的电路深度和逻辑门数量是&lt;strong&gt;O(m)&lt;/strong&gt;，其中 $m=\log M$，因为你要对两个 $M=2^m$ 维量子态 $|x_i\rangle, |u_k\rangle$ 做受控交换，涉及到 $m$ 个量子比特的 SWAP 操作。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;但是 &lt;strong&gt;交换测试的输出是概率&lt;/strong&gt;，不是精确值。要估计 $|\langle x_i | u_k \rangle|^2$ 到精度 $\epsilon$，需要重复采样 $\mathcal{O}(1/\epsilon^2)$ 次。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;有些文献会写成 $\mathcal{O}(1/\epsilon)$，那是假设用更复杂的幅度估计（Amplitude Estimation）来加速采样。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;所以严格说，交换测试的复杂度应该是&lt;/p&gt;
+$$
+    O\!\left(\frac{m}{\epsilon^2}\right) \quad \text{（普通采样）}
+    $$&lt;p&gt;或&lt;/p&gt;
+$$
+    O\!\left(\frac{m}{\epsilon}\right) \quad \text{（用量子幅度估计）}
+    $$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-那跟经典算法-o2m-的对比合理吗&#34;&gt;2. 那跟经典算法 $O(2^m)$ 的对比合理吗？
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;经典情况下，计算两个 $M=2^m$ 维向量的内积，确实需要 $O(2^m)$ 步。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;量子情况下，交换测试只要 $O(m/\epsilon)$。&lt;strong&gt;前提条件&lt;/strong&gt;是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;量子态 $|x_i\rangle, |u_k\rangle$ 已经被准备好；&lt;/li&gt;
+&lt;li&gt;你不计制备代价，只计算“测试”这一步的复杂度。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;但现实中，&lt;strong&gt;制备量子态的成本是很高的&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从经典数据加载到量子态（state preparation）通常需要 $O(2^m)$，除非你有某种“量子RAM”或数据本身有结构能高效编码。&lt;/li&gt;
+&lt;li&gt;所以很多人批评这些量子机器学习论文，说它们忽略了 state preparation 的复杂度，导致看似指数加速，其实并不存在。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-你的两个具体疑问&#34;&gt;3. 你的两个具体疑问
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;交换测试的时间复杂度是不是 $O(m/k)$？&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;严格说：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果用普通采样：$O(m/k^2)$&lt;/li&gt;
+&lt;li&gt;如果用量子幅度估计：$O(m/k)$
+所以书里写的 $O(m/k)$ 是在假设用了幅度估计。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;而且 $k$ 是一个很小很小的数，$m/k$ 不一定比 $2^m$ 小啊？&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;对，这个你看得很清楚：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当 $m$ 不是特别大，或者要求的精度很高（$k$ 很小），量子算法复杂度可能并没有比经典更优。&lt;/li&gt;
+&lt;li&gt;只有在 $m$ 足够大而且你能高效制备量子态时，量子方法才显得有优势。&lt;/li&gt;
+&lt;li&gt;否则，$m/k$ 可能远大于 $2^m$。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;总结&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;交换测试的复杂度不是单纯 $O(m)$，而是 $O(m/\epsilon)$ 或 $O(m/\epsilon^2)$，取决于采样方式。&lt;/li&gt;
+&lt;li&gt;书里写的 $O(m/k)$ 是基于幅度估计的乐观情况。&lt;/li&gt;
+&lt;li&gt;如果把制备态的复杂度算上，往往比经典 $O(2^m)$ 还高。&lt;/li&gt;
+&lt;li&gt;所以量子 K-means 真正的复杂度优势&lt;strong&gt;高度依赖于高效的量子态制备&lt;/strong&gt;，否则这个“指数加速”并不成立。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;二alphafold介绍&#34;&gt;二、AlphaFold介绍
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;AlphaFold2&lt;/strong&gt; 是由 DeepMind（谷歌旗下人工智能公司）开发的一种基于深度学习的蛋白质结构预测系统。它在 &lt;strong&gt;蛋白质折叠问题&lt;/strong&gt; 上取得了突破性进展，能够根据蛋白质的氨基酸序列（即一级结构）准确预测其三维结构（即三级结构）。&lt;/p&gt;
+&lt;h3 id=&#34;背景蛋白质折叠问题&#34;&gt;背景：蛋白质折叠问题
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;蛋白质是由氨基酸组成的链条。&lt;/li&gt;
+&lt;li&gt;这些链条会&lt;strong&gt;自行折叠成三维结构&lt;/strong&gt;，这个结构决定了蛋白质的功能。&lt;/li&gt;
+&lt;li&gt;准确预测蛋白质结构对药物开发、疾病研究、生物工程等非常关键。&lt;/li&gt;
+&lt;li&gt;然而，传统方法（如X射线晶体学、冷冻电镜）耗时、昂贵。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;alphafold2-做了什么&#34;&gt;AlphaFold2 做了什么？
+&lt;/h3&gt;&lt;p&gt;AlphaFold2 在 2020 年的 &lt;strong&gt;国际蛋白质结构预测竞赛 CASP14&lt;/strong&gt; 中取得惊人成功，预测精度在许多情况下接近实验结果。&lt;/p&gt;
+&lt;h4 id=&#34;它的核心能力是&#34;&gt;它的核心能力是：
+&lt;/h4&gt;&lt;blockquote&gt;
+&lt;p&gt;从一个蛋白质的&lt;strong&gt;氨基酸序列&lt;/strong&gt;出发，预测其&lt;strong&gt;原子级别精度的三维结构&lt;/strong&gt;。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h3 id=&#34;alphafold2-的核心技术&#34;&gt;AlphaFold2 的核心技术
+&lt;/h3&gt;&lt;h4 id=&#34;1-多序列比对msa-multiple-sequence-alignment&#34;&gt;1. 多序列比对（MSA, Multiple Sequence Alignment）
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;利用大量相关蛋白质序列信息（从数据库中提取），挖掘共进化关系。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;2-transformer-网络&#34;&gt;2. Transformer 网络
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;使用深度神经网络（变种的 Transformer）来提取蛋白质序列中的复杂关系。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;3-空间建模模块&#34;&gt;3. 空间建模模块
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;模拟氨基酸残基之间的几何关系（距离、角度）并优化预测结构。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;4-循环优化结构&#34;&gt;4. 循环优化结构
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;结构预测不是一次完成，而是通过反复优化（recycling）不断逼近真实结构。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;效果如何&#34;&gt;效果如何？
+&lt;/h3&gt;&lt;p&gt;在 CASP14 比赛中，AlphaFold2 在许多目标上达到 &lt;strong&gt;平均误差小于 1 Å（埃）&lt;/strong&gt;，已经接近实验精度。&lt;/p&gt;
+&lt;h3 id=&#34;为什么重要&#34;&gt;为什么重要？
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;基础科学&lt;/strong&gt;：理解蛋白质功能、演化。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;医疗应用&lt;/strong&gt;：加快新药设计、新疗法开发。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;开源贡献&lt;/strong&gt;：DeepMind 与欧洲生物信息研究所（EBI）于 2021 年发布了 &lt;strong&gt;AlphaFold Protein Structure Database&lt;/strong&gt;，预测了&lt;strong&gt;几乎所有人类蛋白质结构&lt;/strong&gt;，并持续扩展到动植物等生物。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;alphafold2-和-alphafold-有何区别&#34;&gt;AlphaFold2 和 AlphaFold 有何区别？
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;AlphaFold（2018）&lt;/strong&gt;：初代系统，准确率有限。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;AlphaFold2（2020）&lt;/strong&gt;：完全重写，更准确、更快，几乎解决了蛋白质折叠预测问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三蛋白质聚类文献阅读&#34;&gt;三、蛋白质聚类文献阅读
+&lt;/h2&gt;&lt;p&gt;文献：&lt;a class=&#34;link&#34; href=&#34;./1.pdf&#34; &gt;Discovery of new deaminase functions by structure-based protein clustering&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;蛋白质功能预测&lt;/strong&gt; 通常依赖于一维氨基酸序列信息（例如 HMM、motif）；&lt;/li&gt;
+&lt;li&gt;然而，&lt;strong&gt;蛋白质真正的功能主要由其三维结构决定&lt;/strong&gt;；&lt;/li&gt;
+&lt;li&gt;随着 AlphaFold2 的出现，我们现在可以&lt;strong&gt;用 AI 精确预测蛋白质三维结构&lt;/strong&gt;；&lt;/li&gt;
+&lt;li&gt;该研究将 AlphaFold2 引入**蛋白质功能挖掘（protein mining）**流程，用于识别新的脱氨酶（deaminase）功能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;用 &lt;strong&gt;AlphaFold2 预测蛋白质结构&lt;/strong&gt; → 基于结构对蛋白质聚类 → 发现具备新功能的脱氨酶 → 应用于基因编辑。&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;术语&lt;/th&gt;
+          &lt;th&gt;解释&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Deaminase（脱氨酶）&lt;/td&gt;
+          &lt;td&gt;一类催化核苷酸脱氨反应的酶，能改变 DNA/RNA 中的碱基&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AlphaFold2&lt;/td&gt;
+          &lt;td&gt;DeepMind 开发的 AI 工具，可以从蛋白质序列预测出其三维结构&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Base Editing（碱基编辑）&lt;/td&gt;
+          &lt;td&gt;一种不切断 DNA 链的精准基因编辑技术，常用于 C→T 或 A→G 碱基替换&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;ssDNA / dsDNA&lt;/td&gt;
+          &lt;td&gt;单链DNA / 双链DNA&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;CBE（Cytosine Base Editor）&lt;/td&gt;
+          &lt;td&gt;细胞内把 C 转换为 T 的编辑系统，通常由脱氨酶 + Cas9 组成&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;AAV（腺相关病毒）&lt;/td&gt;
+          &lt;td&gt;常用的基因治疗载体，用于把 DNA 运送到细胞内&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;Clade（进化支系）&lt;/td&gt;
+          &lt;td&gt;指具有共同祖先的一组蛋白质&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;TM-score&lt;/td&gt;
+          &lt;td&gt;评估蛋白质结构相似度的指标（类似于结构的“相似度打分”）&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;1-首次大规模用-alphafold2-做结构聚类&#34;&gt;1. &lt;strong&gt;首次大规模用 AlphaFold2 做结构聚类&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;选取 InterPro 数据库中 238 个具有脱氨酶功能的蛋白；&lt;/li&gt;
+&lt;li&gt;用 AlphaFold2 预测其结构；&lt;/li&gt;
+&lt;li&gt;使用结构相似度（而不是序列相似度）进行聚类，形成 20 个结构类（clades）；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;效果比传统序列聚类方法更准确&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-发现了一大批新功能的脱氨酶&#34;&gt;2. &lt;strong&gt;发现了一大批新功能的脱氨酶&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;新发现了一类“&lt;strong&gt;Sdd&lt;/strong&gt;”（single-strand deaminase）蛋白；&lt;/li&gt;
+&lt;li&gt;这些蛋白过去被误注释为“DddA-like”（双链脱氨酶），实际功能是作用于单链DNA；&lt;/li&gt;
+&lt;li&gt;这些新脱氨酶用于构建新的 CBE，有更高效率和更好靶向性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-开发了可以打包进单个病毒载体aav的精简cbe&#34;&gt;3. &lt;strong&gt;开发了可以打包进单个病毒载体（AAV）的精简CBE&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;对传统酶（比如 APOBEC1）进行了“瘦身”（精简氨基酸数），构建出“mini-Sdd”；&lt;/li&gt;
+&lt;li&gt;新的 mini-CBE 既小又高效，能用于小型病毒载体 AAV；&lt;/li&gt;
+&lt;li&gt;成功实现在 &lt;strong&gt;人类细胞、老鼠神经细胞、稻米和大豆&lt;/strong&gt; 中的高效基因编辑。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;4-解决了大豆中-cbe-编辑效率低的问题&#34;&gt;4. &lt;strong&gt;解决了大豆中 CBE 编辑效率低的问题&lt;/strong&gt;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;过去的大豆编辑效率极低；&lt;/li&gt;
+&lt;li&gt;用 mini-Sdd7 成功实现大豆中 &lt;strong&gt;67.4% 的编辑效率&lt;/strong&gt;，大大超越旧方法；&lt;/li&gt;
+&lt;li&gt;对农业基因改良具有重大价值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;5-技术路线&#34;&gt;5. &lt;strong&gt;技术路线&lt;/strong&gt;
+&lt;/h3&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;蛋白质序列 → AlphaFold2 → 3D结构预测 → 聚类（结构相似性） → 实验验证功能 → 新CBE设计
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;6-用了什么聚类算法&#34;&gt;6. 用了什么聚类算法？
+&lt;/h3&gt;&lt;h4 id=&#34;平均链接法average-linkage-clustering&#34;&gt;平均链接法（Average-linkage clustering）
+&lt;/h4&gt;&lt;p&gt;又称为 &lt;strong&gt;UPGMA（Unweighted Pair Group Method with Arithmetic Mean）&lt;/strong&gt;，是一种常见的层次聚类方法。&lt;/p&gt;
+&lt;h4 id=&#34;3d结构是怎么变成聚类输入的&#34;&gt;3D结构是怎么变成聚类输入的？
+&lt;/h4&gt;&lt;p&gt;输入：蛋白质氨基酸序列（来自 InterPro 数据库）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用 &lt;strong&gt;AlphaFold2&lt;/strong&gt; 预测出高可信度的蛋白质三维结构（.pdb 文件）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;比较结构：用 &lt;strong&gt;TM-score&lt;/strong&gt; 算法做结构比对&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;使用 &lt;strong&gt;多结构比对（Multiple Structure Alignment, MSTA）&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对每一对蛋白结构计算一个 &lt;strong&gt;归一化的 TM-score&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;TM-score 是一种衡量两个蛋白结构相似度的指标，范围在 [0, 1]，越高代表越相似&lt;/li&gt;
+&lt;li&gt;与 RMSD 不同，TM-score 对蛋白大小不敏感，更适合跨蛋白家族比较&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;得到相似度矩阵（distance matrix）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;构建一个 &lt;strong&gt;238×238 的结构相似度矩阵&lt;/strong&gt;（TM-score 越高表示越近）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;用该矩阵作为输入，执行：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Average-linkage clustering（层次聚类）→ 生成结构分类树（dendrogram）
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;💡 &lt;strong&gt;输出是一个聚类树图&lt;/strong&gt;，将蛋白质分成了 20 个结构类（clades），比传统序列聚类更有生物学意义。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;可视化工具&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;聚类树可视化：&lt;strong&gt;Figtree&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;结构比对可视化：&lt;strong&gt;PyMOL&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;结构预测工具：&lt;strong&gt;AlphaFold2 v2.2.0&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;相似度计算：&lt;strong&gt;TM-align&lt;/strong&gt;（或论文中没有明确说工具名，但 TM-score 是通用标准）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;7-tm-score是怎样计算的&#34;&gt;7. TM-score是怎样计算的？
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;TM-score（Template Modeling Score）&lt;/strong&gt; 是一个衡量两个蛋白质三维结构相似性的指标。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;范围是 &lt;strong&gt;0 到 1&lt;/strong&gt;，越接近 1 越相似；&lt;/li&gt;
+&lt;li&gt;和传统的 &lt;strong&gt;RMSD（均方根偏差）&lt;/strong&gt; 不同，&lt;strong&gt;TM-score 对蛋白质长度不敏感&lt;/strong&gt;；&lt;/li&gt;
+&lt;li&gt;由 Zhang 和 Skolnick 在 2004 年提出，常用于蛋白质结构预测和比对评价。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;TM-score 的计算公式（简化版）&lt;/p&gt;
+&lt;p&gt;给定两个蛋白质结构 A 和 B（通常是原子坐标，比如 Cα 原子）：&lt;/p&gt;
+$$
+\text{TM-score} = \max\left\{ \frac{1}{L_{\text{target}}} \sum_{i=1}^{L_{\text{align}}} \frac{1}{1 + \left(\frac{d_i}{d_0(L_{\text{target}})}\right)^2} \right\}
+$$&lt;p&gt;公式说明：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$L_{\text{target}}$：目标蛋白的长度&lt;/li&gt;
+&lt;li&gt;$L_{\text{align}}$：对齐后匹配的残基数&lt;/li&gt;
+&lt;li&gt;$d_i$：第 $i$ 对残基之间的距离（欧几里得距离）&lt;/li&gt;
+&lt;li&gt;$d_0(L) = 1.24(L - 15)^{1/3} - 1.8$：归一化因子，依赖蛋白长度&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;相比 RMSD，TM-score：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;更重视“整体折叠结构是否相似”；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;不会因为局部误差放大而导致分数崩掉；&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通常认为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&amp;gt; 0.5 → 结构相似（可能是同一家族）&lt;/li&gt;
+&lt;li&gt;&amp;lt; 0.2 → 基本无结构相关性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;四decimeter-level-cooperative-direct-localization-with-ising-model-approach&#34;&gt;四、Decimeter Level Cooperative Direct Localization With Ising Model Approach
+&lt;/h2&gt;&lt;p&gt;文献：&lt;a class=&#34;link&#34; href=&#34;./2.pdf&#34; &gt;Decimeter Level Cooperative Direct Localization With Ising Model Approach&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;1-什么是-ising-模型&#34;&gt;1. 什么是 Ising 模型？
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;起源&lt;/strong&gt;：最早来自物理学，用来描述磁性材料中自旋（spin）的相互作用。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;形式&lt;/strong&gt;：每个“自旋”是一个二值变量 $x_i \in {-1, +1}$（或 ${0,1}$）。系统的能量写作：&lt;/li&gt;
+&lt;/ul&gt;
+$$
+E(x) = - \sum_i b_i x_i - \sum_{i,j} W_{ij} x_i x_j
+$$&lt;p&gt;其中：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$b_i$：偏置项（单个自旋的倾向）。&lt;/li&gt;
+&lt;li&gt;$W_{ij}$：相互作用权重。&lt;/li&gt;
+&lt;li&gt;可以看作是耦合项 + 磁项&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;物理意义&lt;/strong&gt;：系统会倾向于寻找使能量最小的配置。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;数学意义&lt;/strong&gt;：这是一个二值优化问题（binary optimization）。&lt;/p&gt;
+&lt;h3 id=&#34;2-为什么能用-ising-模型建模定位问题&#34;&gt;2. 为什么能用 Ising 模型建模定位问题？
+&lt;/h3&gt;&lt;p&gt;在论文里，定位被转化为 &lt;strong&gt;稀疏重建问题&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;假设在一个网格上只有少数点可能是信号源位置。&lt;/li&gt;
+&lt;li&gt;于是形成了一个 &lt;strong&gt;稀疏向量&lt;/strong&gt;，大部分为 0，只有少数为 1（对应可能的位置）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这个优化目标（最小化 $\ell_0$ 范数 + 拟合误差）可以写成一个 &lt;strong&gt;二次二值优化问题&lt;/strong&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\ell_0$ 范数相当于惩罚“有多少个 1”；&lt;/li&gt;
+&lt;li&gt;拟合误差相当于二次项。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;把这些项整理后，恰好符合 Ising 模型的能量形式，所以，定位问题就能转化为 Ising 优化问题。&lt;/p&gt;
+&lt;h3 id=&#34;3-为什么-ell_1-范数会引入偏差&#34;&gt;3. 为什么 $\ell_1$ 范数会引入偏差？
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;$\ell_0$&lt;/strong&gt; 范数：直接计数非零元素（准确表达稀疏性），但优化是 NP-hard。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;$\ell_1$&lt;/strong&gt; 范数：常作为 $\ell_0$ 的凸松弛，因为它可解性好。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;问题&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\ell_1$ 会“惩罚幅度”，导致估计的系数偏小（收缩效应 shrinkage）。&lt;/li&gt;
+&lt;li&gt;在定位场景下，会把真实信号的位置估计“拉向零”，造成 &lt;strong&gt;位置偏差&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;而 &lt;strong&gt;$\ell_0$&lt;/strong&gt; 只管“有无”，不管幅度大小，所以不会有这种系统性偏差。&lt;/p&gt;
+&lt;h3 id=&#34;4-什么是-qubo-问题&#34;&gt;4. 什么是 QUBO 问题？
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;定义&lt;/strong&gt;：Quadratic Unconstrained Binary Optimization&lt;/li&gt;
+&lt;/ul&gt;
+$$
+\min_{x \in \{0,1\}^n} x^T Q x
+$$&lt;ul&gt;
+&lt;li&gt;和 Ising 模型本质等价，只是变量取值不同（QUBO 用 ${0,1}$，Ising 用 ${-1,1}$）。&lt;/li&gt;
+&lt;li&gt;常用于组合优化、图问题、调度问题，以及量子计算中的 &lt;strong&gt;量子退火&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;5-怎样用-mcmc-和-da-高效求解&#34;&gt;5. 怎样用 MCMC 和 DA 高效求解？
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;MCMC（马尔科夫链蒙特卡洛）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;用随机采样的方法近似求解最优解。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在 Ising 模型里常用 &lt;strong&gt;Metropolis-Hastings&lt;/strong&gt; 或 &lt;strong&gt;Gibbs Sampling&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;随机翻转一个自旋，看能量变化 ΔE。&lt;/li&gt;
+&lt;li&gt;如果能量下降，就接受；如果上升，则以概率 $\exp(-\beta \Delta E)$ 接受。&lt;/li&gt;
+&lt;li&gt;反复迭代，系统逐渐“降温”到低能量解（接近全局最优）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;DA（Digital Annealer, 富士通的数字退火器）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;是一种专门硬件（类量子退火机，但基于 CMOS）。&lt;/li&gt;
+&lt;li&gt;可以并行模拟大量自旋翻转，大大加快收敛。&lt;/li&gt;
+&lt;li&gt;对 QUBO/Ising 这种大规模二值优化非常高效。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;6-批注&#34;&gt;6. 批注
+&lt;/h3&gt;&lt;h4 id=&#34;1&#34;&gt;1.
+&lt;/h4&gt;&lt;p&gt;The idea of direct localization was first developed in [20]. In that work, the authors proposed a one-step direct localization approach based on estimating the eigenstructure of the spectral density matrix of the received signal.&lt;/p&gt;
+&lt;p&gt;基于密度矩阵可以哦。&lt;/p&gt;
+&lt;h4 id=&#34;2&#34;&gt;2.
+&lt;/h4&gt;&lt;p&gt;This paper proposes a novel direct localization method by co-processing the received signal at all antenna arrays. To coprocess data, we take advantage of the fact that LoS path from the mobile user to all of the antenna arrays originates from a common location in the area. Nevertheless, non-LoS (NLoS) paths are caused by reflection from different objects in the environment, making them to have a random nature. In other words, when we grid the area, the strongest signal received at all the antenna arrays comes from one of the grid points. Taking this fact into account, the localization problem can be formulated as a sparse support recovery problem. Therefore, we employ a compressed sensing framework for our direct localization approach which is an NP-hard optimization problem. As mentioned before, l1-norm relaxation is generally used to make this problem tractable which results in inherent bias to the solution. However, recently, authors of [46] proposed that under some conditions, binary approximation for l0-norm optimization problems leads to optimal support. In addition, although the binary approximation is still NPhard, there exists efficient binary programming solvers such as branch-and-bound methods and annealing-based methods.&lt;/p&gt;
+&lt;p&gt;为什么这个过程是NP-hard的？难道0和1的阈值难以选取么？是因为LoS和NLoS难以区分，对吧？&lt;/p&gt;
+&lt;h4 id=&#34;3-这是一维ising问题还是二维ising为什么二维天线阵列可以用一维ising建模&#34;&gt;3. 这是一维Ising问题还是二维Ising？为什么二维天线阵列可以用一维Ising建模？
+&lt;/h4&gt;&lt;p&gt;Ising 模型在这里的形式&lt;/p&gt;
+&lt;p&gt;论文里最终把问题写成了 &lt;strong&gt;QUBO/Ising&lt;/strong&gt;：&lt;/p&gt;
+$$
+E(x) = - b^\top x - x^\top W x
+$$&lt;p&gt;其中：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$x \in {0,1}^G$（或 ${-1,1}^G$），$G$ 是 &lt;strong&gt;网格点的总数&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;每个 &lt;strong&gt;网格点&lt;/strong&gt;对应一个二值变量。&lt;/li&gt;
+&lt;li&gt;$b$ 是偏置向量，$W$ 是相互作用矩阵（全连接）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;注意：这里并不是物理意义上的“二维 Ising 格子”，而是一个 &lt;strong&gt;一维向量形式&lt;/strong&gt;的 Ising 模型，只不过这个向量的维度等于网格点数。&lt;/p&gt;
+&lt;p&gt;为什么不是二维的？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在物理学里，二维 Ising 指的是自旋排在二维平面格子上，通常只考虑最近邻相互作用。&lt;/li&gt;
+&lt;li&gt;在这篇文章里，&lt;strong&gt;所有网格点两两之间都可能有“相互作用”&lt;/strong&gt;（因为 $W$ 是稠密矩阵）。&lt;/li&gt;
+&lt;li&gt;所以他们没有采用“二维 Ising 物理模型”，而是采用“全连接 Ising 优化模型”。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;换句话说，&lt;strong&gt;变量是平面网格点的一维编号&lt;/strong&gt;，而不是保留二维的拓扑结构。&lt;/p&gt;
+&lt;h4 id=&#34;4-crb介绍&#34;&gt;4. CRB介绍
+&lt;/h4&gt;&lt;p&gt;CRB 指的是 Cramér–Rao Bound（克拉美–罗下界）。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在统计学和信号处理里，CRB 给出了 &lt;strong&gt;任何无偏估计器的方差下界&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;也就是说：&lt;/p&gt;
+$$
+  \mathrm{Var}(\hat{\theta}) \geq \frac{1}{I(\theta)}
+  $$&lt;p&gt;其中 $I(\theta)$ 是 Fisher 信息量（Fisher Information）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;换句话说，不管你用什么算法，只要是无偏的，精度不可能超过 CRB。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这篇文章要解决的是 &lt;strong&gt;定位问题&lt;/strong&gt;，估计的是用户的位置坐标 $(x_u, y_u)$。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;作者推导了基于他们信号模型的 &lt;strong&gt;Fisher 信息矩阵 (FIM)&lt;/strong&gt;，然后反推出 CRB。&lt;/li&gt;
+&lt;li&gt;CRB 代表了 &lt;strong&gt;在给定信道、噪声、天线数等条件下，理论上能达到的最佳定位精度&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;5-为什么要推crb&#34;&gt;5. 为什么要推CRB？
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;对比用&lt;/strong&gt;：把他们提出的 Ising 模型方法的实际误差（RMSE）和 CRB 对比。&lt;/li&gt;
+&lt;li&gt;如果算法的 RMSE 越接近 CRB，说明方法越接近理论最优。&lt;/li&gt;
+&lt;li&gt;在文章的结果部分（Fig.10），他们发现：随着信噪比（SNR）升高，他们的算法误差 &lt;strong&gt;逐渐逼近 CRB&lt;/strong&gt;，说明性能很强。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;6-model解释&#34;&gt;6. Model解释
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;室内有一个 &lt;strong&gt;WiFi 用户（信号源）&lt;/strong&gt;，它发射一个窄带信号。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;周围有 &lt;strong&gt;多个接入点（Access Points, AP）&lt;/strong&gt;，每个接入点上装有 &lt;strong&gt;天线阵列（通常是一排 ULA，Uniform Linear Array）&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;信号从用户传到各个 AP 的时候，会经历 &lt;strong&gt;多径传播&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一条是直达路径（LoS，Line of Sight）；&lt;/li&gt;
+&lt;li&gt;其他路径是反射、散射后的信号（NLoS）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;信号接收模型：&lt;/p&gt;
+&lt;p&gt;每个接入点接收到的信号可以写成：&lt;/p&gt;
+$$
+y_p = \sum_{l=1}^L s_{lp} \cdot a(\theta_{lp}, r_{lp}) + n_p
+$$&lt;p&gt;翻译一下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$y_p$：第 $p$ 个接入点的接收信号（是一个向量，因为有阵列）。&lt;/li&gt;
+&lt;li&gt;$\sum_{l=1}^L$：有 $L$ 条路径（1 条直达 + 多条反射）。&lt;/li&gt;
+&lt;li&gt;$s_{lp}$：第 $l$ 条路径的复数幅度（包含衰减和相位）。&lt;/li&gt;
+&lt;li&gt;$a(\theta_{lp}, r_{lp})$：&lt;strong&gt;阵列流形向量&lt;/strong&gt;，描述“信号从某个角度 $\theta$、某个距离 $r$ 进来时，天线阵列接收到的相位/幅度模式”。&lt;/li&gt;
+&lt;li&gt;$n_p$：噪声。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;换句话说，接收信号就是：&lt;strong&gt;直达路径 + 一堆反射 + 噪声&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;LoS 的特殊性&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对所有 AP 来说，&lt;strong&gt;直达路径都来自同一个位置（用户位置）&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;但是 NLoS 是由不同墙壁、桌子、物体反射来的，每个 AP 的反射情况都不一样，&lt;strong&gt;不共享&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这就是为什么联合处理信号（co-processing）有用：&lt;strong&gt;可以利用所有 AP 的 LoS 一致性来锁定真实位置&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;网格化思想&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;把整个区域划分成很多 &lt;strong&gt;候选位置网格点&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;对每个网格点，可以计算出如果用户在这里，AP 应该接收到什么样的信号模式（即阵列流形向量）。&lt;/li&gt;
+&lt;li&gt;然后用实际接收到的信号和这些“字典”比对 → 找到最匹配的网格点 → 就是用户位置。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;由于真实用户只在一个位置，所以在一大堆网格点中，只有极少数是“有效的”，这就是 &lt;strong&gt;稀疏性&lt;/strong&gt;。&lt;/p&gt;
+&lt;h4 id=&#34;7-整体思路&#34;&gt;7. 整体思路
+&lt;/h4&gt;&lt;p&gt;把整个平面划成很多网格点；对每个接入点（AP）的天线阵列，用这些网格点生成“字典/阵列流形”；把多径下的接收信号写成“稀疏叠加”；由于所有 AP 的直达径（LoS）都来自同一个真实位置，所以各 AP 在同一个网格索引上应该同时“点亮”。于是，问题变成“找出被点亮的少数网格索引”（稀疏支撑恢复），再把它改写成 Ising/QUBO 的二值优化，用 MCMC/数字退火去解。  &lt;/p&gt;
+&lt;p&gt;步骤1：网格化 + 阵列流形（字典）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在 2D 区域上打一个稠密网格（G 个点）。对每个 AP，用近场的 ULA 阵列流形 $a(\theta_p, r_p)$（同时含 AoA 和距离项）去“预计算”每个网格点在该 AP 上的阵列响应，拼成矩阵 $\Psi_p$（大小 $M\times G$）。直观上，$\Psi_p$ 的第 $i$ 列就是“若信号来自第 $i$ 个网格点，在这个 AP 的天线阵上会长成什么样”。 &lt;/li&gt;
+&lt;li&gt;近场流形里既有角度项也有距离项，能让“直接定位”（不先估 AoA/ToF）成为可能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;步骤2：把接收信号写成“稀疏叠加”&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在第 $p$ 个 AP，接收向量可以写成：
+$y_p \approx \Psi_p, s_p + n_p$。这里 $s_p$ 对应各网格点的复幅度；在理想无反射时只有一个非零（LoS）；有反射时会多几个非零，但整体仍然“很稀疏”。&lt;/li&gt;
+&lt;li&gt;更关键的是：所有 AP 的 LoS 都来自&lt;strong&gt;同一个&lt;/strong&gt;网格点（用户真实位置），而各自的 NLoS 由不同物体反射，彼此不一致，这个“共性+随机”的结构正好适合用联合稀疏恢复。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;步骤3：把联合稀疏恢复做成二值的 $\ell_0$ 模型&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;先写压缩感知的联合恢复：最小化各 $s_p$ 的稀疏度，约束重构误差不超过阈值（式(11)）。&lt;/li&gt;
+&lt;li&gt;论文把幅度简化成“开/关”（0/1），只关心“哪个网格点被选中”，把 $s_p$ 的&lt;strong&gt;支撑&lt;/strong&gt;改用二值向量 $x_p$ 表示，得到二值计划（式(12)）。&lt;/li&gt;
+&lt;li&gt;再利用“各 AP 共享同一个 LoS 网格索引”的事实，把所有 $x_p$ 合并成一个公共 $x$ 来约束，得到式(13)。这一步把“协同处理”的核心信息揉进了模型里。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;步骤4：为什么要“好字典”（tight frame + 结构匹配）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;仅仅把问题二值化还不保证“原始问题的最佳支撑=二值问题的支撑”。文中引用 [46] 指出：&lt;strong&gt;在字典满足某些条件&lt;/strong&gt;（是 tight frame、并且“原子”形状符合物理结构）时，二值近似能恢复到最优支撑。为满足这些条件，论文把所有 AP 的字典做成块对角的“过完备流形”$\Psi$（式(14)），并用“交替投影的网格设计算法（APGD）”去迭代修正网格/字典，使其更接近 tight frame 和结构模型。 &lt;/li&gt;
+&lt;li&gt;这一步是方法能跑得准的“地基工程”。没有合格的 $\Psi$，二值化未必靠谱。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;步骤5：把目标函数改写成 Ising/QUBO&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;把约束问题(13)改成带惩罚的无约束形式：
+$\min_{x\in{0,1}^G} |x|_0 + \gamma\sum_p |y_p-\Psi_p x|_2^2$（式(18)）。&lt;/li&gt;
+&lt;li&gt;展开二次项并利用 $x_i\in{0,1}$（有 $x_i^2=x_i$），把目标重写成 Ising 能量形式
+$E(x) = - b^\top x - x^\top W x + \text{常数}$，其中 $b$ 是“偏置”（越大越鼓励某格点被选中），$W$ 是“连接权”（刻画任意两格点同时被选中的代价/奖励），它们都能由 $\Psi_p$ 和观测 $y_p$ 的内积/相关量显式算出（式(20)–(21) 给了逐项展开与系数表达）。&lt;/li&gt;
+&lt;li&gt;这就是把定位问题“等价”成一个标准的 Ising/QUBO 二值二次优化；Ising 用 ${-1,+1}$ 表示、QUBO 用 ${0,1}$ 表示，二者可互转。优点是可以直接调用成熟的二值求解器（退火、分支定界、量子/特种硬件等）。 &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;步骤6：用 MCMC/数字退火高效求解&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ising/QUBO 常用马尔可夫链蒙特卡洛（MCMC）族的退火法来近似全局最优。文中先讲了 Gibbs 采样与 Metropolis–Hastings：随机挑一个“自旋/比特”，看翻转后能量变化 $\Delta E$；若能量降则必收，否则以 $\exp(-\beta\Delta E)$ 的概率接受。温度逐步降低，系统趋向能量最低的配置。 &lt;/li&gt;
+&lt;li&gt;论文具体用了富士通的 Digital Annealer（DA）——一种面向 Ising/QUBO 的 MCMC 型特种计算架构。它对全连接 Ising 的“到解时间”相较传统退火/并行回火更快（引自[54]）。整体计算量主要由 $W$ 的规模决定，变量数为 $G$ 时复杂度约 $O(G^2)$。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;输出与后处理&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;退火收敛后获得二值 $x$。最显著的“1”的位置就是估计的用户所在网格点；也可以对“前几名”做个细化（如质心/局部细格搜索），论文实验部分直接用网格点给出结果。方法在仿真和两种真实室内场景里，相比 $\ell_1$-CS 的 DiSouL 和 ML 系列都有明显中位误差优势。 &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;8-对下面这段话不理解&#34;&gt;8. 对下面这段话不理解：
+&lt;/h4&gt;&lt;p&gt;“由于所有 AP 的直达径（LoS）都来自同一个真实位置，所以各 AP 在同一个网格索引上应该同时“点亮”。于是，问题变成“找出被点亮的少数网格索引”（稀疏支撑恢复），再把它改写成 Ising/QUBO 的二值优化，用 MCMC/数字退火去解”&lt;/p&gt;
+&lt;p&gt;网格化的直觉&lt;/p&gt;
+&lt;p&gt;想象你把房间地板划成很多小方格（网格点），就像围棋盘。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;假设用户手机只会出现在某一个格子里。&lt;/li&gt;
+&lt;li&gt;每个接入点（AP）的天线阵列都能“看”到这个用户，但看到的角度、相位模式不同。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;于是，对每个 AP 来说，它都会觉得“某个格子最符合我接收到的信号”。&lt;/p&gt;
+&lt;p&gt;LoS 的“共性”&lt;/p&gt;
+&lt;p&gt;关键在于：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;直达路径（LoS）&lt;/strong&gt; 必须来自同一个格子（因为用户只能站在一个地方）。&lt;/li&gt;
+&lt;li&gt;但是 &lt;strong&gt;反射路径（NLoS）&lt;/strong&gt; 可能对应别的格子（墙壁、桌子等），而且各 AP 的反射点互相不一样。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以如果你把多个 AP 的“候选格子”叠在一起，&lt;strong&gt;唯一在所有 AP 那里都点亮的格子，就是用户真实位置&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;稀疏支撑恢复&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在上百上千个网格点里，真正有信号的只有很少几个（用户位置 + 少量反射点）。&lt;/li&gt;
+&lt;li&gt;大多数格子都是“零”，只有极少数是“1”。&lt;/li&gt;
+&lt;li&gt;这就是所谓的 &lt;strong&gt;稀疏性&lt;/strong&gt;，问题就变成了“找出那几个 1 的位置”。这在数学上叫 &lt;strong&gt;稀疏支撑恢复&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;改写成 Ising/QUBO&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;为了让计算机能解这个“找几个 1”的问题，我们把每个格子用一个二值变量表示：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1 = 这个格子有用户/信号&lt;/li&gt;
+&lt;li&gt;0 = 没有&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;然后目标函数写成 Ising 或 QUBO 形式（一个二次函数，里面只有 0/1 变量）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;这样问题就变成：&lt;strong&gt;找到一组 0/1 组合，使得能量最小&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;用 MCMC / 数字退火去解&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;MCMC&lt;/strong&gt;（马尔科夫链蒙特卡洛）：模拟随机搜索，逐步朝“低能量解”走，最后找到最可能的 1 的位置。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数字退火器（DA）&lt;/strong&gt;：一种专门加速解 Ising/QUBO 的硬件/算法，可以更快找到答案。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;这项工作的优点和局限性&#34;&gt;这项工作的优点和局限性：
+&lt;/h4&gt;&lt;p&gt;优点：定位精度优于现在的l1方法，在高SNR下接近CRB；鲁棒性好；用DA退火硬件能高校求解。&lt;/p&gt;
+&lt;p&gt;局限性：动态场景处理不好、时间复杂度不行、各个仪器的参数（维数过大）&lt;/p&gt;
+&lt;h3 id=&#34;7-遵循词典的构造方式采用ising模型求解这个问题的科学原理&#34;&gt;7. 遵循词典的构造方式（采用Ising模型求解这个问题的科学原理）
+&lt;/h3&gt;&lt;h4 id=&#34;1-什么是词典&#34;&gt;1. 什么是“词典”
+&lt;/h4&gt;&lt;p&gt;在压缩感知 / 稀疏表示里，**词典（dictionary）**就是一组“原子（atoms）”，每个原子对应一种信号模式。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在这篇文章里，&lt;strong&gt;一个网格点的位置&lt;/strong&gt;对应一个“原子”：即“如果用户在这里，这个 AP 的天线会收到怎样的相位模式”。&lt;/li&gt;
+&lt;li&gt;所以，每个接入点都有一个大矩阵 $\Psi_p$，它的列就是这些原子。把所有 AP 的拼起来就是整个系统的“词典”。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;2-遵循词典的构造方式是什么意思&#34;&gt;2. “遵循词典的构造方式”是什么意思？
+&lt;/h4&gt;&lt;p&gt;论文引用的 [46] 结果说：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一般来说，$\ell_0$ 优化 → 二值近似 不一定成立；但如果词典满足某些性质，比如 &lt;strong&gt;tight frame（紧框架）&lt;/strong&gt; 或者 &lt;strong&gt;与信号的物理结构匹配&lt;/strong&gt;，那么二值近似依然能恢复正确的稀疏支撑。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因此，作者强调：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;他们的“词典构造方式”就是按照 **物理传播模型（阵列流形）**来建的，而不是随便设的。&lt;/li&gt;
+&lt;li&gt;这种构造保证了词典原子之间的相关性结构符合实际信号模型。&lt;/li&gt;
+&lt;li&gt;在这种“遵循物理/结构的词典”下，二值化的 $\ell_0$ 模型仍然能找出正确的位置。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;3-举个类比&#34;&gt;3. 举个类比
+&lt;/h4&gt;&lt;p&gt;想象你有一本字典：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果这本字典是“正规编的”，每个词都真实存在，那么你可以放心地在里面查词。&lt;/li&gt;
+&lt;li&gt;如果字典随便造的，词和含义乱七八糟，那你就不能保证查到的词是对的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在本文里，“遵循词典的构造方式”就是说：他们的字典是严格按照物理规律构造的（阵列流形 → 每个网格点的响应），所以二值近似才有理论保证。&lt;/p&gt;
+&lt;h4 id=&#34;4-总结&#34;&gt;4. 总结
+&lt;/h4&gt;&lt;p&gt;“遵循词典的构造方式” = &lt;strong&gt;词典的原子是根据实际传播模型（阵列流形 + 网格化）构造的，而不是随便凑的&lt;/strong&gt;。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这样构造出来的字典满足一些数学条件（tight frame / 结构一致性）。&lt;/li&gt;
+&lt;li&gt;在这种情况下，$\ell_0$ → 二值近似的转换是可靠的，可以恢复到真实的稀疏支撑（即用户位置）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;华为的总结！！！！！！！&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>20250829 星期五</title>
+        <link>http://localhost:1313/p/test-chinese/</link>
+        <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/test-chinese/</guid>
+        <description>&lt;h1 id=&#34;20250829-星期五&#34;&gt;20250829 星期五
+&lt;/h1&gt;&lt;h2 id=&#34;一参数化量子线路中为什么用z作为测量算子&#34;&gt;一、参数化量子线路中，为什么用Z作为测量算子？
+&lt;/h2&gt;&lt;h3 id=&#34;1-量子硬件的天然测量基&#34;&gt;1. 量子硬件的天然测量基
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;主流量子硬件（超导量子比特、离子阱）都是在计算基 $|0\rangle, |1\rangle$ 下进行测量的&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;计算基对应的算符就是 &lt;strong&gt;Pauli-Z 算子&lt;/strong&gt;的本征态：&lt;/p&gt;
+$$
+  Z|0\rangle = +|0\rangle, \quad Z|1\rangle = -|1\rangle
+  $$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;因此，测量 Z 就等价于在计算基测量 $|0\rangle / |1\rangle$，硬件直接支持。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-期望值计算方便&#34;&gt;2. 期望值计算方便
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;对一个量子态 $|\psi\rangle$，测量 $Z$ 的期望值是：&lt;/p&gt;
+$$
+  \langle Z \rangle = P(0) - P(1)
+  $$&lt;p&gt;其中 $P(0), P(1)$ 分别是测量得到 $|0\rangle, |1\rangle$ 的概率。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实际实验里只要重复测量多次，统计 $0/1$ 的频率，就能得到 $\langle Z \rangle$，计算量小，统计直观。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-可推广到任意算符&#34;&gt;3. 可推广到任意算符
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;更复杂的 Hamiltonian（例如分子能量）一般表示为 Pauli 算符的线性组合：&lt;/p&gt;
+$$
+  H = \sum_i c_i P_i, \quad P_i \in \{I, X, Y, Z\}^{\otimes n}
+  $$&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实际上，任何可测的算符都能分解成若干个 $Z$ 测量，只需要在测量前加一些基变换门（比如 $H$ 把 Z 基变成 X 基，$HS^\dagger$ 把 Z 基变成 Y 基）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;所以只要能测 Z，理论上就能测所有算符。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;4-梯度计算更自然&#34;&gt;4. 梯度计算更自然
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;在 &lt;strong&gt;变分量子算法 (VQA)&lt;/strong&gt; 或 &lt;strong&gt;量子神经网络 (QNN)&lt;/strong&gt; 里，我们常通过测量 $Z$ 的期望值来定义损失函数。&lt;/li&gt;
+&lt;li&gt;用参数偏移法（parameter shift rule）计算梯度时，Z 基测量的数学形式最简洁，也与硬件的默认读出相匹配。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;二参数化量子线路和经典ai模型有什么区别&#34;&gt;二、参数化量子线路和经典AI模型有什么区别？
+&lt;/h2&gt;&lt;h3 id=&#34;1-从相似性出发&#34;&gt;1. 从相似性出发
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;PQC 和经典神经网络 (NN)&lt;/strong&gt; 的确很像：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;都有「参数」（旋转角度 vs. 权重矩阵）；&lt;/li&gt;
+&lt;li&gt;都有「线路/层」（量子门 vs. 神经元层）；&lt;/li&gt;
+&lt;li&gt;都需要「训练」（最小化损失函数）；&lt;/li&gt;
+&lt;li&gt;都依赖「测量/输出概率」作为结果。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以可以把 &lt;strong&gt;PQC 看成“量子版的神经网络”&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id=&#34;2-那么为什么还要量子的&#34;&gt;2. 那么为什么还要量子的？
+&lt;/h3&gt;&lt;p&gt;核心原因是：量子态的表示能力 &amp;amp; 计算复杂度。&lt;/p&gt;
+&lt;h4 id=&#34;1-指数级的状态空间&#34;&gt;(1) &lt;strong&gt;指数级的状态空间&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;一个 $n$ 比特的量子系统需要 $2^n$ 个复数幅度来描述。&lt;/li&gt;
+&lt;li&gt;经典神经网络在同样维度下，表示相同复杂度的函数需要指数级参数。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;PQC 在理论上能更紧凑地表示某些复杂函数/分布。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;2-量子并行性&#34;&gt;(2) &lt;strong&gt;量子并行性&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;PQC 演化时，本质是对 $2^n$ 个振幅同时做线性变换（虽然不能直接读取所有信息，但能在干涉/测量中利用）。&lt;/li&gt;
+&lt;li&gt;在某些问题（比如量子化学、量子系统建模、某些组合优化）中，PQC 有可能比经典方法更快收敛或表示更自然。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;3-量子数据优势&#34;&gt;(3) &lt;strong&gt;量子数据优势&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;有些数据&lt;strong&gt;本身是量子态&lt;/strong&gt;（比如量子实验结果、分子波函数、量子通信信号）。&lt;/li&gt;
+&lt;li&gt;对这类数据，经典 AI 需要先「落地」成经典数据，可能丢失信息，而 PQC 可以&lt;strong&gt;直接处理量子数据&lt;/strong&gt;，避免转换损失。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;4-潜在的加速&#34;&gt;(4) &lt;strong&gt;潜在的加速&lt;/strong&gt;
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;在某些特定任务（如 &lt;strong&gt;Hamiltonian ground state 求解&lt;/strong&gt;、&lt;strong&gt;量子系统动力学模拟&lt;/strong&gt;、&lt;strong&gt;某些分布采样问题&lt;/strong&gt;）上，经典方法已知很难高效解决。&lt;/li&gt;
+&lt;li&gt;PQC 有可能通过量子优势（Quantum Advantage）获得超越经典的表现。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-现实的限制&#34;&gt;3. 现实的限制
+&lt;/h3&gt;&lt;p&gt;当然，目前 PQC &lt;strong&gt;并没有普遍超越经典神经网络&lt;/strong&gt;，因为：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;量子硬件有噪声、比特数有限；&lt;/li&gt;
+&lt;li&gt;训练困难（barren plateau 问题）；&lt;/li&gt;
+&lt;li&gt;很多任务经典方法更高效。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以在现阶段：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;经典 AI 更适合通用任务（图像、NLP、推荐系统等）；&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;量子 AI 更像是为特定领域（量子物理、化学、优化、加密）做探索。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;三qgan经典与量子切换的过程开销&#34;&gt;三、QGAN经典与量子切换的过程开销
+&lt;/h2&gt;&lt;p&gt;QGAN就是通过经典计算机和量子计算机之间的迭代切换，找到参数化量子线路的最优参数。由于经典计算机和量子计算机的架构不一样，这个切换可能需要很多时间？&lt;/p&gt;
+&lt;p&gt;在量超融合的背景下，能否像计算机体系结构的思想一样，减少切换的时间消耗？&lt;/p&gt;
+&lt;h2 id=&#34;四受限玻尔兹曼机简介量子机器学习也讲了量子受限玻尔兹曼机&#34;&gt;四、受限玻尔兹曼机简介，《量子机器学习》也讲了量子受限玻尔兹曼机
+&lt;/h2&gt;&lt;h3 id=&#34;1-玻尔兹曼机-boltzmann-machine&#34;&gt;1. 玻尔兹曼机 (Boltzmann Machine)
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;是一种 &lt;strong&gt;能量模型 (energy-based model)&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;它定义了一种对输入数据的概率分布：&lt;/p&gt;
+$$
+  P(v) = \frac{1}{Z} \sum_h e^{-E(v,h)}
+  $$&lt;ul&gt;
+&lt;li&gt;$v$：可见层（visible layer，表示观测数据）&lt;/li&gt;
+&lt;li&gt;$h$：隐藏层（hidden layer，表示潜在特征）&lt;/li&gt;
+&lt;li&gt;$E(v,h)$：能量函数&lt;/li&gt;
+&lt;li&gt;$Z$：归一化常数（配分函数）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;思路：好的输入（数据样本）对应较低的能量，模型通过学习把训练数据的能量降到最低，从而建模数据分布。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-受限的含义&#34;&gt;2. “受限”的含义
+&lt;/h3&gt;&lt;p&gt;普通玻尔兹曼机（BM）里，任意两节点都可能相连，训练太复杂。
+&lt;strong&gt;RBM 对其结构做了限制&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;仅允许 &lt;strong&gt;可见层与隐藏层连接&lt;/strong&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可见层之间、隐藏层之间&lt;/strong&gt;都没有连接。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;🔹 这种&lt;strong&gt;二部图结构&lt;/strong&gt;让条件概率因子化，推断和训练大大简化。&lt;/p&gt;
+&lt;h3 id=&#34;3-rbm-的能量函数&#34;&gt;3. RBM 的能量函数
+&lt;/h3&gt;&lt;p&gt;RBM 的能量函数定义为：&lt;/p&gt;
+$$
+E(v,h) = - \sum_i a_i v_i - \sum_j b_j h_j - \sum_{i,j} v_i W_{ij} h_j
+$$&lt;ul&gt;
+&lt;li&gt;$v_i$：第 $i$ 个可见单元（输入数据特征，通常是 0/1）&lt;/li&gt;
+&lt;li&gt;$h_j$：第 $j$ 个隐藏单元（潜在特征，通常是 0/1）&lt;/li&gt;
+&lt;li&gt;$a_i, b_j$：偏置项&lt;/li&gt;
+&lt;li&gt;$W_{ij}$：连接权重&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对应的概率分布是：&lt;/p&gt;
+$$
+P(v,h) = \frac{1}{Z} e^{-E(v,h)}
+$$&lt;h3 id=&#34;4-训练方法&#34;&gt;4. 训练方法
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;因为配分函数 $Z$ 难算，直接最大似然估计不可行。&lt;/li&gt;
+&lt;li&gt;Hinton 提出了 &lt;strong&gt;对比散度 (Contrastive Divergence, CD)&lt;/strong&gt; 算法，用 MCMC（Gibbs 采样）近似梯度更新。&lt;/li&gt;
+&lt;li&gt;训练目标：让模型学会输入数据分布。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;5-应用&#34;&gt;5. 应用
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;特征学习&lt;/strong&gt;：RBM 可以自动学习输入的高层特征。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;降维&lt;/strong&gt;：类似 PCA，但非线性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;推荐系统&lt;/strong&gt;：Netflix 最早尝试过用 RBM。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;深度信念网络 (DBN)&lt;/strong&gt;：多个 RBM 堆叠，后来启发了深度学习。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;量子模拟&lt;/strong&gt;：RBM 还能用来表示量子波函数（Carleo &amp;amp; Troyer, Science 2017）。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>20250829 星期五</title>
+        <link>http://localhost:1313/p/test-chinese/</link>
+        <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/test-chinese/</guid>
+        <description>&lt;h1 id=&#34;20250901-星期一&#34;&gt;20250901 星期一
+&lt;/h1&gt;&lt;h2 id=&#34;一美联储降息之前和之后以及降息这个过程会对a股金价有什么影响&#34;&gt;一、美联储降息之前和之后，以及降息这个过程，会对A股、金价有什么影响？
+&lt;/h2&gt;&lt;h3 id=&#34;一美联储降息前预期阶段&#34;&gt;一、美联储降息前（预期阶段）
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;A股&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果市场预期美联储要降息，通常会引发 &lt;strong&gt;全球流动性宽松预期&lt;/strong&gt;，风险资产（股票、新兴市场）容易受益。&lt;/li&gt;
+&lt;li&gt;投资者会提前布局&lt;strong&gt;成长股、科技股&lt;/strong&gt;等对利率敏感的板块。&lt;/li&gt;
+&lt;li&gt;但如果降息是因为经济恶化（衰退信号），市场也会担心全球需求下降，A股周期股、出口板块可能承压。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;金价&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;降息预期会削弱美元和美债收益率 → 黄金无息资产的机会成本下降 → &lt;strong&gt;金价往往提前上涨&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;特别是如果伴随通胀或地缘政治风险，黄金的避险属性会被放大。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;二美联储正式宣布降息事件阶段&#34;&gt;二、美联储正式宣布降息（事件阶段）
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;A股&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果降息幅度符合预期：短期利好，资金面情绪改善，外资可能加大流入中国市场。&lt;/li&gt;
+&lt;li&gt;如果降息超预期（比如一次性大幅降息）：往往说明经济压力大，可能短暂利好，但中长期担忧会让风险偏好下降。&lt;/li&gt;
+&lt;li&gt;如果不及预期：股市可能先冲高再回落，风险偏好降温。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;金价&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一般来说，&lt;strong&gt;降息落地会强化金价上涨趋势&lt;/strong&gt;，因为实际利率下降、美元走弱。&lt;/li&gt;
+&lt;li&gt;但如果市场认为这是一次“技术性降息”，未来不会持续，金价可能冲高回落。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;三美联储降息后执行阶段&#34;&gt;三、美联储降息后（执行阶段）
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;A股&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;降息后通常会有 &lt;strong&gt;“宽松红利窗口期”&lt;/strong&gt;，外资流入新兴市场，A股流动性环境改善。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;行业上：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;科技、消费、地产链条（若国内也配合宽松）可能受益。&lt;/li&gt;
+&lt;li&gt;原材料、出口行业还要看全球需求是否恢复。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;但如果全球进入衰退，即使降息，风险资产也可能表现疲弱。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;金价&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;长期看，降息周期对黄金通常是 &lt;strong&gt;利多&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;因为实际利率走低（甚至负利率），美元资产吸引力下降，资金更多配置到黄金。&lt;/li&gt;
+&lt;li&gt;历史上，美联储开启降息周期后，黄金大多进入上行通道。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;四规律总结&#34;&gt;四、规律总结
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;预期阶段&lt;/strong&gt;：金价先涨，A股风险资产情绪改善。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;宣布阶段&lt;/strong&gt;：若符合/超预期，A股短期利好；金价往往突破性上行。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;执行阶段&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果降息=流动性宽松 → A股、黄金双涨。&lt;/li&gt;
+&lt;li&gt;如果降息=经济衰退信号 → 黄金涨，A股可能震荡甚至走弱。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
+        <title>20250829 星期五</title>
+        <link>http://localhost:1313/p/test-chinese/</link>
+        <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/p/test-chinese/</guid>
+        <description>&lt;h1 id=&#34;a-perspective-on-protein-structure-prediction-using-quantum-computers&#34;&gt;A Perspective on Protein Structure Prediction Using Quantum Computers
+&lt;/h1&gt;&lt;h2 id=&#34;1-背景与动机&#34;&gt;1. 背景与动机
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;传统 PSP（Protein Structure Prediction，蛋白质结构预测）依赖 &lt;strong&gt;模板方法（如 AlphaFold2）&lt;/strong&gt; 和 &lt;strong&gt;物理模拟（分子动力学）&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;模板方法在大数据下表现优异，但对 &lt;strong&gt;新型蛋白、浅 MSA（multiple sequence alignment）、突变体&lt;/strong&gt; 预测较差。&lt;/li&gt;
+&lt;li&gt;物理模拟方法受限于经典计算资源扩展性差。&lt;/li&gt;
+&lt;li&gt;因此，作者提出利用 &lt;strong&gt;量子计算的组合优化与量子态叠加/纠缠优势&lt;/strong&gt; 来探索 PSP 的新路径。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2-量子计算与蛋白质折叠的类比&#34;&gt;2. 量子计算与蛋白质折叠的类比
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;蛋白折叠能量漏斗&lt;/strong&gt;（folding funnel）：蛋白质通过能量景观逐渐趋向最低能量态。&lt;/li&gt;
+&lt;li&gt;其搜索空间复杂、能量面崎岖（多局部极小值），类似于 &lt;strong&gt;量子优化问题&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Grover 搜索算法&lt;/strong&gt; 提供了在无序搜索中的二次加速；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;QAOA（量子近似优化算法）与 VQE（变分量子特征值求解器）&lt;/strong&gt; 可以看作 Grover 的变体，用来搜索最低能量构象。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;量子隧穿效应&lt;/strong&gt; 能帮助跨越能量势垒，相比经典算法更容易逃出局部极小值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;3-量子-经典混合流程&#34;&gt;3. 量子-经典混合流程
+&lt;/h2&gt;&lt;p&gt;作者提出了一个 &lt;strong&gt;混合工作流&lt;/strong&gt;，步骤如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;量子部分&lt;/strong&gt;：在量子计算机上运行 &lt;strong&gt;变分量子算法（VQE）&lt;/strong&gt;，基于 &lt;strong&gt;粗粒化格点模型&lt;/strong&gt;（Cα-only backbone，Miyazawa-Jernigan 势函数），搜索最低能量构象。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;经典部分&lt;/strong&gt;：将量子结果转化为原子级结构，再用分子力场做能量最小化精修。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;最终得到全原子模型&lt;/strong&gt;，保留量子预测的几何特征。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;实验验证&#34;&gt;实验验证
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;在 IBM_Cleveland 量子机上预测了 &lt;strong&gt;Zika 病毒 NS3 helicase 的 7-残基催化 P-loop&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;RMSD（主链偏差）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PEP-FOLD3：1.64 Å （最佳）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;量子算法（VQE on IBM）&lt;/strong&gt;：1.78 Å&lt;/li&gt;
+&lt;li&gt;经典暴力搜索：1.88 Å&lt;/li&gt;
+&lt;li&gt;AlphaFold2：3.53 Å（最差）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;说明量子方法在 &lt;strong&gt;小规模蛋白和低 MSA 情况下&lt;/strong&gt; 已经可以接近甚至优于经典 AI 方法。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;4-量子资源估算&#34;&gt;4. 量子资源估算
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;使用 IBM 的 &lt;strong&gt;Eagle (127 qubits)&lt;/strong&gt; 设备，可以处理 ~22 个氨基酸。&lt;/li&gt;
+&lt;li&gt;未来 IBM &lt;strong&gt;Osprey (433 qubits)&lt;/strong&gt; 可达 ~41 个氨基酸，&lt;strong&gt;Condor (1121 qubits)&lt;/strong&gt; 可达 ~67 个氨基酸。&lt;/li&gt;
+&lt;li&gt;估算血红蛋白（141 残基）需要 ~4,967 量子比特和高保真电路。&lt;/li&gt;
+&lt;li&gt;资源需求随氨基酸数量 &lt;strong&gt;二次增长&lt;/strong&gt;，目前仍受限于硬件规模。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;5-总结与前景&#34;&gt;5. 总结与前景
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;量子计算的优势点&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在 &lt;strong&gt;rugged landscape（崎岖能量面）&lt;/strong&gt; 和 &lt;strong&gt;低数据/浅 MSA&lt;/strong&gt; 情况下更有潜力超越 AI。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;量子隧穿&lt;/strong&gt; 可能帮助搜索更快收敛。&lt;/li&gt;
+&lt;li&gt;混合量子-经典方法在早期应用中表现出可比肩甚至优于 AlphaFold2 的结果。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;挑战&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当前硬件只能处理几十残基，距离生物医学上真正大规模蛋白（上百残基）仍有差距。&lt;/li&gt;
+&lt;li&gt;需要 &lt;strong&gt;更高量子比特数、更低错误率&lt;/strong&gt; 才能进入实用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;未来方向&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;开发更高效的量子算法（更好的 ansatz、哈密顿量映射）。&lt;/li&gt;
+&lt;li&gt;与 &lt;strong&gt;深度学习方法结合&lt;/strong&gt;，互补优势。&lt;/li&gt;
+&lt;li&gt;长期目标是实现 &lt;strong&gt;全电子精确模拟（DFT/HF）&lt;/strong&gt;，最终解决完整折叠路径问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;computational-analysis-unveiling-the-quantum-algorithms-for-protein-analysis-and-predictions&#34;&gt;Computational Analysis: Unveiling the Quantum Algorithms for Protein Analysis and Predictions
+&lt;/h1&gt;&lt;h2 id=&#34;量子部分总结&#34;&gt;量子部分总结
+&lt;/h2&gt;&lt;h3 id=&#34;1-背景与动机-1&#34;&gt;1. 背景与动机
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;蛋白质结构预测和PPI预测是&lt;strong&gt;NP难问题&lt;/strong&gt;，在经典计算中需要极大计算量。&lt;/li&gt;
+&lt;li&gt;经典机器学习（CNN、RNN、LSTM等）在预测上有进展，但面临数据维度高、组合复杂度大、可扩展性差的问题。&lt;/li&gt;
+&lt;li&gt;量子计算利用&lt;strong&gt;叠加态、纠缠、量子并行性&lt;/strong&gt;，在搜索和优化上可提供加速。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-量子信息处理基础&#34;&gt;2. 量子信息处理基础
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;量子比特 (qubit)&lt;/strong&gt; 可以同时处于 0 和 1 的叠加态。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;量子门与量子电路&lt;/strong&gt;（Hadamard、Pauli、CNOT等）用于态的操作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;量子算法&lt;/strong&gt;利用干涉放大正确解的概率（如Grover搜索）、模拟复杂系统（量子模拟）、优化问题（QAOA, 量子退火）等。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-量子算法在蛋白质问题中的应用&#34;&gt;3. 量子算法在蛋白质问题中的应用
+&lt;/h3&gt;&lt;h4 id=&#34;1-grover-搜索算法用于蛋白质折叠&#34;&gt;(1) Grover 搜索算法用于蛋白质折叠
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;将氨基酸建模为&lt;strong&gt;疏水(H)与亲水(P)两类&lt;/strong&gt;，映射到三维 &lt;strong&gt;体心立方晶格 (bcc lattice)&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;用量子态叠加生成所有可能的构象(superposition of conformations)。&lt;/li&gt;
+&lt;li&gt;计算每个构象的能量（通过氨基酸间相互作用定义的哈密顿量）。&lt;/li&gt;
+&lt;li&gt;将能量最低的构象作为**“标记解”**输入 Grover 算法搜索。&lt;/li&gt;
+&lt;li&gt;Grover 迭代放大最低能量态的概率，实现对稳定结构的预测。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;结果：相较经典搜索，时间复杂度从 &lt;strong&gt;O(n)&lt;/strong&gt; 降到 &lt;strong&gt;O(√n)&lt;/strong&gt;，精度最高可达 &lt;strong&gt;93.4%&lt;/strong&gt;。&lt;/p&gt;
+&lt;h4 id=&#34;2-ppi-预测&#34;&gt;(2) PPI 预测
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;通过量子叠加同时考虑大量蛋白质相互作用可能性。&lt;/li&gt;
+&lt;li&gt;Grover 算法能高效识别正确的相互作用对。&lt;/li&gt;
+&lt;li&gt;在验证中，Grover算法对PPI预测的速度和准确性均优于SVM、CNN等经典方法。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;3-蛋白质折叠与能量优化的量子建模&#34;&gt;(3) 蛋白质折叠与能量优化的量子建模
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;构建 &lt;strong&gt;量子哈密顿量 (Hamiltonian)&lt;/strong&gt;：包括构象寄存器（qcf）和相互作用寄存器（qin）。&lt;/li&gt;
+&lt;li&gt;使用变分量子线路 (VQE 类似思路)，优化能量并求得稳定折叠结构。&lt;/li&gt;
+&lt;li&gt;量子模拟提供对复杂生物体系（如蛋白-配体结合）的更自然建模方式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;4-优势与挑战&#34;&gt;4. 优势与挑战
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;优势：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;搜索和优化的加速（Grover: 二次加速；退火/QAOA: 处理NP难优化）。&lt;/li&gt;
+&lt;li&gt;可以更好处理高维组合复杂性。&lt;/li&gt;
+&lt;li&gt;能在理论上发现经典算法难以捕捉的相互作用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;挑战：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;量子硬件仍不成熟（退相干、误差率高、量子比特数量有限）。&lt;/li&gt;
+&lt;li&gt;实际部署需结合量子-经典混合算法。&lt;/li&gt;
+&lt;li&gt;算法理论上有优势，但在生物数据规模下仍需进一步验证。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;finding-low-energy-conformations-of-lattice-protein-models-by-quantum-annealing&#34;&gt;Finding low-energy conformations of lattice protein models by quantum annealing
+&lt;/h1&gt;&lt;h2 id=&#34;量子部分总结-1&#34;&gt;量子部分总结
+&lt;/h2&gt;&lt;h3 id=&#34;1-研究背景&#34;&gt;1. 研究背景
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;蛋白质折叠问题是 NP 难的优化问题：目标是找到氨基酸序列的&lt;strong&gt;最低能量构象&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;经典方法（如模拟退火）在搜索能量景观时效率有限。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;量子退火 (Quantum Annealing, QA)&lt;/strong&gt; 被认为可以利用量子隧穿更高效地探索复杂能量景观，从而加速优化。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-核心思想量子退火&#34;&gt;2. 核心思想：量子退火
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;量子退火是&lt;strong&gt;量子绝热计算 (Adiabatic Quantum Computation, AQC)&lt;/strong&gt; 的一种实现方式。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;方法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;构造一个目标哈密顿量 $H_p$，其基态对应于蛋白质的最低能量构象。&lt;/li&gt;
+&lt;li&gt;初始化系统在一个简单哈密顿量 $H_b$ 的基态（对应所有可能折叠的叠加态）。&lt;/li&gt;
+&lt;li&gt;随时间逐渐将 $H_b$ 演化为 $H_p$，系统在绝热条件下保持在基态，最后得到最低能量折叠。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;公式：&lt;/p&gt;
+$$
+H(t) = A(t) H_b + B(t) H_p
+$$&lt;p&gt;其中 $A(0) \gg B(0)$，而 $A(1) = 0, B(1) \gg 0$。&lt;/p&gt;
+&lt;h3 id=&#34;3-问题映射&#34;&gt;3. 问题映射
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;蛋白质被建模为&lt;strong&gt;晶格上的自回避游走 (self-avoiding walk)&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;每个氨基酸是一个“珠子”，通过“键”连接。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在二维晶格上，一个键有 4 种可能方向，需要 &lt;strong&gt;2 个比特编码&lt;/strong&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;因此，一个 $N$-氨基酸的构象可用 $2N-5$ 个二进制变量表示。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;构造能量函数：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;邻近非键氨基酸的相互作用能（使用 &lt;strong&gt;Miyazawa–Jernigan (MJ) 模型&lt;/strong&gt; 或 HP 模型）。&lt;/li&gt;
+&lt;li&gt;对不合法的重叠构象加上能量惩罚。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;该能量函数被转化为 &lt;strong&gt;伊辛哈密顿量 (Ising Hamiltonian)&lt;/strong&gt;，再映射到量子比特网络上。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;4-实验实现&#34;&gt;4. 实验实现
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;使用 &lt;strong&gt;D-Wave 超导量子退火芯片&lt;/strong&gt;（115 个可用量子比特）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实现了 &lt;strong&gt;六肽序列 PSVKMA&lt;/strong&gt;（Proline–Serine–Valine–Lysine–Methionine–Alanine）在二维晶格下的最低能量构象搜索。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;采用分治策略：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将高阶多体相互作用分解为二体相互作用（需要引入辅助比特）。&lt;/li&gt;
+&lt;li&gt;通过 &lt;strong&gt;embedding 技术&lt;/strong&gt; 将逻辑比特映射到实际硬件比特网络中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实验规模：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;HP 模型四肽：使用 5 和 8 个量子比特。&lt;/li&gt;
+&lt;li&gt;MJ 模型六肽：使用 5、27、28 和 81 个量子比特。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;5-实验结果&#34;&gt;5. 实验结果
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;成功找到最低能量的构象（ground state）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在 8 比特实验中，实验结果与 &lt;strong&gt;Bloch–Redfield 开放量子系统模拟&lt;/strong&gt;高度一致（约 80% 成功率）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在 81 比特实验中，成功率较低（1 万次测量中仅 13 次得到正确解），主要由于：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;硬件精度限制（耦合强度与局域场的模拟精度有限）。&lt;/li&gt;
+&lt;li&gt;噪声与退相干。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;6-贡献与意义&#34;&gt;6. 贡献与意义
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;首次&lt;/strong&gt;在量子硬件上实现了蛋白质折叠模型的能量优化。&lt;/li&gt;
+&lt;li&gt;证明了量子退火在 &lt;strong&gt;生物物理优化问题&lt;/strong&gt;上的可行性。&lt;/li&gt;
+&lt;li&gt;虽然实例规模小，但展示了未来结合更大规模量子设备和高效映射方法的潜力。&lt;/li&gt;
+&lt;li&gt;可扩展方向：分子识别、蛋白质设计、序列比对等生物物理问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;gate-based-quantum-computing-for-protein-design&#34;&gt;Gate-based quantum computing for protein design
+&lt;/h1&gt;&lt;h3 id=&#34;研究背景&#34;&gt;研究背景
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;蛋白质设计问题&lt;/strong&gt;：目标是通过改变氨基酸序列，找到能量最低的构象。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;计算复杂度&lt;/strong&gt;：设计位点数为 &lt;em&gt;s&lt;/em&gt; 时，可能的序列数为 $A^s$（A=20 个氨基酸），属于 &lt;strong&gt;NP-hard 问题&lt;/strong&gt;。经典算法通常需要 $O(N)$ 搜索，而量子算法（Grover）理论上能提供 $O(\sqrt{N})$ 的加速。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;核心方法量子部分&#34;&gt;核心方法（量子部分）
+&lt;/h3&gt;&lt;p&gt;文章提出了一个&lt;strong&gt;纯量子、基于门的方案&lt;/strong&gt;，用 &lt;strong&gt;Grover 搜索算法&lt;/strong&gt;解决蛋白质设计问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Grover 算法流程&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;初始化&lt;/strong&gt;：对 $n$ 个量子比特施加 Hadamard 门，得到所有可能状态的均匀叠加。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Oracle&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入蛋白质的结构信息、预计算的配对能量表，以及阈值能量 $E_{th}$。&lt;/li&gt;
+&lt;li&gt;通过量子加法器/乘法器计算总能量 $E_{tot}$。&lt;/li&gt;
+&lt;li&gt;若 $E_{tot} &amp;lt; E_{th}$，则对该序列的幅度取反，标记为“解”。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;扩散器（Diffuser）&lt;/strong&gt;：增强解态的幅度。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;测量&lt;/strong&gt;：通过 $O(\sqrt{N/M})$ 次迭代后，解态被放大到接近 100% 概率。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;三种 Oracle 模型&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;SP 模型 (Simplified)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;类似二维格点模型，能量仅为整数相加，没有距离依赖。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;MR 模型 (More Realistic)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;引入 &lt;strong&gt;距离倒数 $d^{-1}$&lt;/strong&gt; 作为权重，模拟库仑作用。&lt;/li&gt;
+&lt;li&gt;能量表用定点小数，更接近真实物理模型。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;IBM-SP 模型&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;极简化版本，采用疏水-极性 (HP) 模型。&lt;/li&gt;
+&lt;li&gt;用在真实 IBM 量子计算机上测试。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;量子资源需求&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SP、MR 模型需要几十到上百个比特（MR 复杂度更高，可达 &lt;strong&gt;234 qubits&lt;/strong&gt;）。&lt;/li&gt;
+&lt;li&gt;IBM-SP 模型只需 7 qubits，能在现有设备上运行。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;主要结果&#34;&gt;主要结果
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;模拟器结果&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通过 &lt;strong&gt;MPS (Matrix Product State) 模拟器&lt;/strong&gt;成功模拟高达 234 qubits 的电路。&lt;/li&gt;
+&lt;li&gt;实现了 Grover 的预期加速：$\mathcal{O}(\sqrt{N/M})$ 次迭代即可找到答案，概率接近 100%。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;真实量子计算机结果&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在 IBM Toronto 和 Montreal 设备上运行 IBM-SP 模型。&lt;/li&gt;
+&lt;li&gt;受限于 NISQ 器件的噪声与电路深度（&amp;gt;160 gates，远超 NISQ 可容忍范围 ~50 gates），结果只能部分区分正确解，正确率约 28%。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;意义与展望&#34;&gt;意义与展望
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;这是&lt;strong&gt;首个基于纯量子门模型的蛋白质设计方法&lt;/strong&gt;（之前多为混合算法或量子退火）。&lt;/li&gt;
+&lt;li&gt;提供了量子计算在蛋白质设计中获得二次加速的理论验证。&lt;/li&gt;
+&lt;li&gt;当前受限于 NISQ 器件的噪声和深度，但随着硬件提升或结合 QAOA 等混合方法，未来有望在真实生物分子设计中应用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;leveraging-quantum-lstm-for-high-accuracy-prediction-of-viral-mutations&#34;&gt;Leveraging Quantum LSTM for High-Accuracy Prediction of Viral Mutations
+&lt;/h1&gt;&lt;h2 id=&#34;研究目标&#34;&gt;研究目标
+&lt;/h2&gt;&lt;p&gt;文章提出了一种 &lt;strong&gt;量子增强长短期记忆网络 (Quantum LSTM, QLSTM)&lt;/strong&gt;，用于预测 &lt;strong&gt;SARS-CoV-2 病毒蛋白的突变&lt;/strong&gt;。它将 &lt;strong&gt;量子计算的并行性与纠缠性&lt;/strong&gt; 融入传统 LSTM，以更好地处理 &lt;strong&gt;高维、非线性的基因组数据&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;量子部分的核心内容&#34;&gt;量子部分的核心内容
+&lt;/h2&gt;&lt;h3 id=&#34;1-量子计算与-lstm-的结合&#34;&gt;1. 量子计算与 LSTM 的结合
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;传统 LSTM&lt;/strong&gt;：通过遗忘门、输入门、输出门来学习序列数据，但在长序列和复杂依赖中会出现 &lt;strong&gt;梯度消失&lt;/strong&gt; 问题。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;QLSTM 改进&lt;/strong&gt;：在 LSTM 中嵌入 &lt;strong&gt;量子层&lt;/strong&gt;，输入基因序列数据被编码为量子态（qubits），由量子电路处理后再送入 LSTM。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;优势&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;叠加 (Superposition)&lt;/strong&gt; → 并行处理多个序列状态，加速模式识别。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;纠缠 (Entanglement)&lt;/strong&gt; → 建立远距离位点间的依赖关系，解决传统模型难以捕捉的长程关联。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-qlstm-的量子结构&#34;&gt;2. QLSTM 的量子结构
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;量子比特 (Qubits)&lt;/strong&gt;：采用 8 个 qubits 表征数据，兼顾表达能力与当前硬件限制。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;量子门 (Quantum Gates)&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Hadamard 门：生成叠加态。&lt;/li&gt;
+&lt;li&gt;CNOT 门：产生纠缠态。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;量子层输出&lt;/strong&gt; → 作为输入提供给 LSTM 各个门（遗忘门、输入门、候选单元、输出门），提升对复杂模式的建模能力。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-数据与特征处理&#34;&gt;3. 数据与特征处理
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;TF-IDF&lt;/strong&gt;：提取突变相关的关键信息，突出罕见但重要的核苷酸特征。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;PCA&lt;/strong&gt;：降维到 50 个主成分，保留 95% 的数据方差信息，减轻量子计算资源负担。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;One-hot 编码&lt;/strong&gt;：将 20 种氨基酸转化为向量形式，适合量子与深度学习混合处理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;4-实验结果量子优势&#34;&gt;4. 实验结果（量子优势）
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;数据&lt;/strong&gt;：使用 50 条 SARS-CoV-2 全基因组蛋白序列进行训练，10 条新序列测试。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;性能对比&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;QLSTM 准确率 &lt;strong&gt;97.5%&lt;/strong&gt;，优于&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;AACNN (86.2%)&lt;/li&gt;
+&lt;li&gt;Stacked RNN (88.9%)&lt;/li&gt;
+&lt;li&gt;RetNet (91.5%)&lt;/li&gt;
+&lt;li&gt;BiLSTM (93.6%)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;收敛速度&lt;/strong&gt;：比经典 LSTM 快 30%，验证损失显著降低。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;可解释性&lt;/strong&gt;：t-SNE 聚类图显示 QLSTM 能清晰区分不同的突变模式。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;突变识别&lt;/strong&gt;：成功捕捉到关键突变（如 &lt;strong&gt;D614G&lt;/strong&gt;、&lt;strong&gt;N501Y&lt;/strong&gt;），这些突变与病毒传染性增强和免疫逃逸密切相关。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;意义与展望-1&#34;&gt;意义与展望
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;QLSTM 结合了 &lt;strong&gt;量子并行性 + 序列建模能力&lt;/strong&gt;，在高维基因数据中展现出比传统模型更强的表现。&lt;/li&gt;
+&lt;li&gt;为 &lt;strong&gt;疫苗研发、药物抗性预测、病毒演化监测&lt;/strong&gt; 提供新工具。&lt;/li&gt;
+&lt;li&gt;尽管目前还主要依赖 &lt;strong&gt;量子模拟器/小规模量子硬件&lt;/strong&gt;，但随着硬件发展，QLSTM 有望成为处理大规模生物数据的 &lt;strong&gt;可扩展解决方案&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;这篇论文里的那些Related Work都是些很好的方向啊！&lt;/strong&gt;
+比如使用自编码网络等生成模型合成可能的新变种序列，结果与真实变种高度相似，强调 AI 可用于模拟病毒进化路径。&lt;/p&gt;
+&lt;h2 id=&#34;tf-idf-的核心思想&#34;&gt;TF-IDF 的核心思想
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;TF（词频）&lt;/strong&gt;：某个元素（这里是核苷酸 A/T/C/G，或更高层次的氨基酸片段）在一条序列中出现的频率。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;强调序列内部哪些成分比较突出。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;IDF（逆文档频率）&lt;/strong&gt;：某个元素在整个数据集中出现的稀有程度。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;常见的碱基（比如 A、T）会被弱化，稀有但重要的突变碱基/氨基酸会被增强。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;TF-IDF = TF × IDF&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;高分数 → 某个元素在当前序列中频繁出现，但在其他序列中罕见 → &lt;strong&gt;可能就是关键突变位点&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;在基因组蛋白序列中的作用&#34;&gt;在基因组/蛋白序列中的作用
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;把生物序列转化为数值向量&lt;/strong&gt;，让机器学习/深度学习模型能直接处理。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;突出稀有但重要的突变信息&lt;/strong&gt;，而不是被常见的背景碱基（如 A/T 高频出现）淹没。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;减少噪声&lt;/strong&gt;：避免模型学习到无关的“常见片段”。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;配合 PCA 降维&lt;/strong&gt;：在提取出有价值的特征后，再压缩数据维度，提高量子计算效率。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;论文中的具体作用&#34;&gt;论文中的具体作用
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;在 SARS-CoV-2 基因组序列中，TF-IDF 用来识别 &lt;strong&gt;最具信息量的核苷酸/氨基酸特征&lt;/strong&gt;。&lt;/li&gt;
+&lt;li&gt;这些特征被输入到 &lt;strong&gt;QLSTM&lt;/strong&gt;，帮助模型更准确地预测哪些位点容易发生突变。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;quantum-computing-for-chemical-and-biomolecular-product-design&#34;&gt;Quantum computing for chemical and biomolecular product design
+&lt;/h1&gt;&lt;h2 id=&#34;总体定位&#34;&gt;总体定位
+&lt;/h2&gt;&lt;p&gt;文章主要讨论量子计算（QC）在化学与生物分子产品设计中的应用前景，强调其在解决复杂分子体系计算、蛋白质折叠预测、反应动力学模拟等问题上的潜力。&lt;/p&gt;
+&lt;h2 id=&#34;量子计算与化学生物分子设计的联系&#34;&gt;量子计算与化学/生物分子设计的联系
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;薛定谔方程求解&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;化学与生物分子设计需要精确求解多电子体系的薛定谔方程。&lt;/li&gt;
+&lt;li&gt;经典计算机通常依赖近似方法（如 DFT，计算量 ~N³），而高精度方法如 CI 或 CCSD(T) 随体系大小呈 &lt;strong&gt;N⁷&lt;/strong&gt; 甚至更高的复杂度。&lt;/li&gt;
+&lt;li&gt;量子计算机由于其“天然量子特性”，在原理上能更高效表示并求解多电子波函数。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;量子比特存储优势&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一个分子波函数所需的经典比特数远远超出可能存储的范围，例如咖啡因分子需要约 10³⁵ TB 的经典存储；&lt;/li&gt;
+&lt;li&gt;对应的量子表示只需约 160 个量子比特即可，这在近期的硬件路线图上已可实现。&lt;/li&gt;
+&lt;li&gt;说明量子计算机在数据表示与处理上具有天然优势。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;核心量子应用场景&#34;&gt;核心量子应用场景
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;量子化学性质预测&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;QC 能在更高精度上预测催化剂、溶剂等分子性质。&lt;/li&gt;
+&lt;li&gt;特别适合经典方法难以处理的体系，如含过渡金属的催化酶活性中心或强关联系统。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;蛋白质折叠与结构预测&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;蛋白质最低能量构象的搜索是 NP-hard 问题。&lt;/li&gt;
+&lt;li&gt;量子退火 (Quantum Annealing) 和量子优化算法（如 QAOA、Grover 搜索）能在庞大构象空间中提供“有限量子加速”（limited quantum speedup），虽不能彻底解决 NP-hard，但能改进缩放表现。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;复杂反应与分子动力学&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;多步化学反应的过渡态、反应动力学模拟对经典计算来说代价巨大。&lt;/li&gt;
+&lt;li&gt;QC 可通过量子模拟算法直接处理量子态演化，潜在更高效探索分子反应路径。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;混合量子-经典方法&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;短期内完全依赖量子机不可行，因此文章强调 &lt;strong&gt;混合框架&lt;/strong&gt;（例如 VQE、QAOA + 经典优化器），在药物设计、材料筛选、蛋白质建模中逐步落地。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;挑战与限制&#34;&gt;挑战与限制
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;当前硬件受限于 &lt;strong&gt;噪声、量子比特数量不足&lt;/strong&gt;；&lt;/li&gt;
+&lt;li&gt;全酶体系或大分子体系仍超出近期可计算范围；&lt;/li&gt;
+&lt;li&gt;近期研究方向是通过 &lt;strong&gt;混合量子-经典方法&lt;/strong&gt;、以及结合机器学习来缓解硬件不足。&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>Chinese Test</title>
         <link>http://localhost:1313/p/test-chinese/</link>
         <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/p/test-chinese/</guid>
-        <description>&lt;img src="http://localhost:1313/p/test-chinese/helena-hertz-wWZzXlDpMog-unsplash.jpg" alt="Featured image of post Chinese Test" /&gt;&lt;h2 id=&#34;正文测试&#34;&gt;正文测试
+        <description>&lt;h2 id=&#34;正文测试&#34;&gt;正文测试
 &lt;/h2&gt;&lt;p&gt;而这些并不是完全重要，更加重要的问题是， 带着这些问题，我们来审视一下学生会退会。 既然如何， 对我个人而言，学生会退会不仅仅是一个重大的事件，还可能会改变我的人生。 我们不得不面对一个非常尴尬的事实，那就是， 可是，即使是这样，学生会退会的出现仍然代表了一定的意义。 学生会退会，发生了会如何，不发生又会如何。 经过上述讨论， 生活中，若学生会退会出现了，我们就不得不考虑它出现了的事实。 学生会退会，到底应该如何实现。 这样看来， 在这种困难的抉择下，本人思来想去，寝食难安。 对我个人而言，学生会退会不仅仅是一个重大的事件，还可能会改变我的人生。 就我个人来说，学生会退会对我的意义，不能不说非常重大。 莎士比亚曾经提到过，人的一生是短的，但如果卑劣地过这一生，就太长了。这似乎解答了我的疑惑。 莫扎特说过一句富有哲理的话，谁和我一样用功，谁就会和我一样成功。这启发了我， 对我个人而言，学生会退会不仅仅是一个重大的事件，还可能会改变我的人生。 学生会退会，到底应该如何实现。 一般来说， 从这个角度来看， 这种事实对本人来说意义重大，相信对这个世界也是有一定意义的。 在这种困难的抉择下，本人思来想去，寝食难安。 了解清楚学生会退会到底是一种怎么样的存在，是解决一切问题的关键。 一般来说， 生活中，若学生会退会出现了，我们就不得不考虑它出现了的事实。 问题的关键究竟为何？ 而这些并不是完全重要，更加重要的问题是。&lt;/p&gt;
 &lt;p&gt;奥斯特洛夫斯基曾经说过，共同的事业，共同的斗争，可以使人们产生忍受一切的力量。　带着这句话，我们还要更加慎重的审视这个问题： 一般来讲，我们都必须务必慎重的考虑考虑。 既然如此， 这种事实对本人来说意义重大，相信对这个世界也是有一定意义的。 带着这些问题，我们来审视一下学生会退会。 我认为， 我认为， 在这种困难的抉择下，本人思来想去，寝食难安。 问题的关键究竟为何？ 每个人都不得不面对这些问题。 在面对这种问题时， 要想清楚，学生会退会，到底是一种怎么样的存在。 我认为， 既然如此， 每个人都不得不面对这些问题。 在面对这种问题时， 那么， 我认为， 学生会退会因何而发生。&lt;/p&gt;
 &lt;h2 id=&#34;引用&#34;&gt;引用

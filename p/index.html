@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="20250827 星期三 一、无线通信 1. AoA（入射角） 原理 无线信号到达一个天线阵列时，不同天线接收到的信号相位会有差异。 利用这些相位差，就可以估算出信号的到达方向（即入射角）。\n举例 假设有一排天线（阵列），间距已知。 如果信号正面垂直入射，所有天线接收的信号相位相同。 如果信号斜着来，相邻天线会有时间差/相位差。 通过测量这个相位差，就能计算出角度。\n公式 $$\r\\Delta \\phi = \\frac{2\\pi d \\sin(\\theta)}{\\lambda}\r$$ 其中： $d$：天线间距；$\\lambda$：信号波长；$\\theta$：信号入射角\n2. ToF（飞行时间） 原理 无线信号从发射端到接收端需要一定时间（传播延迟）。 如果我们知道信号传播速度（在空气中大约是光速 $c = 3 \\times 10^8 , m/s$），就能通过测量延迟计算距离。\n举例 假设 WiFi 发一个脉冲，接收端检测到它花了 10ns 才到达： $$\rd = c \\times t = 3 \\times 10^8 \\times 10^{-8} = 3 \\, m\r$$ 这说明信号传播距离是 3 米。\n3. 区别和应用 AoA：给你方向，但不直接给距离。常用于 三角定位（多天线接收 + 三角交点求位置）。 ToF：给你距离，但不直接给方向。常用于 多基站测距 + 交点求位置。 两者结合（AoA + ToF），可以提高定位精度。\n">
+<title></title>
+
+<link rel='canonical' href='http://localhost:1313/p/'>
+
+<link rel="stylesheet" href="/scss/style.min.946cca6c6259ef94ac55abfae7c7bf3291ea3ed5eea17ef77500b257217c6710.css"><meta property='og:title' content="">
+<meta property='og:description' content="20250827 星期三 一、无线通信 1. AoA（入射角） 原理 无线信号到达一个天线阵列时，不同天线接收到的信号相位会有差异。 利用这些相位差，就可以估算出信号的到达方向（即入射角）。\n举例 假设有一排天线（阵列），间距已知。 如果信号正面垂直入射，所有天线接收的信号相位相同。 如果信号斜着来，相邻天线会有时间差/相位差。 通过测量这个相位差，就能计算出角度。\n公式 $$\r\\Delta \\phi = \\frac{2\\pi d \\sin(\\theta)}{\\lambda}\r$$ 其中： $d$：天线间距；$\\lambda$：信号波长；$\\theta$：信号入射角\n2. ToF（飞行时间） 原理 无线信号从发射端到接收端需要一定时间（传播延迟）。 如果我们知道信号传播速度（在空气中大约是光速 $c = 3 \\times 10^8 , m/s$），就能通过测量延迟计算距离。\n举例 假设 WiFi 发一个脉冲，接收端检测到它花了 10ns 才到达： $$\rd = c \\times t = 3 \\times 10^8 \\times 10^{-8} = 3 \\, m\r$$ 这说明信号传播距离是 3 米。\n3. 区别和应用 AoA：给你方向，但不直接给距离。常用于 三角定位（多天线接收 + 三角交点求位置）。 ToF：给你距离，但不直接给方向。常用于 多基站测距 + 交点求位置。 两者结合（AoA + ToF），可以提高定位精度。\n">
+<meta property='og:url' content='http://localhost:1313/p/'>
+<meta property='og:site_name' content='KaifanPan'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta name="twitter:title" content="">
+<meta name="twitter:description" content="20250827 星期三 一、无线通信 1. AoA（入射角） 原理 无线信号到达一个天线阵列时，不同天线接收到的信号相位会有差异。 利用这些相位差，就可以估算出信号的到达方向（即入射角）。\n举例 假设有一排天线（阵列），间距已知。 如果信号正面垂直入射，所有天线接收的信号相位相同。 如果信号斜着来，相邻天线会有时间差/相位差。 通过测量这个相位差，就能计算出角度。\n公式 $$\r\\Delta \\phi = \\frac{2\\pi d \\sin(\\theta)}{\\lambda}\r$$ 其中： $d$：天线间距；$\\lambda$：信号波长；$\\theta$：信号入射角\n2. ToF（飞行时间） 原理 无线信号从发射端到接收端需要一定时间（传播延迟）。 如果我们知道信号传播速度（在空气中大约是光速 $c = 3 \\times 10^8 , m/s$），就能通过测量延迟计算距离。\n举例 假设 WiFi 发一个脉冲，接收端检测到它花了 10ns 才到达： $$\rd = c \\times t = 3 \\times 10^8 \\times 10^{-8} = 3 \\, m\r$$ 这说明信号传播距离是 3 米。\n3. 区别和应用 AoA：给你方向，但不直接给距离。常用于 三角定位（多天线接收 + 三角交点求位置）。 ToF：给你距离，但不直接给方向。常用于 多基站测距 + 交点求位置。 两者结合（AoA + ToF），可以提高定位精度。\n">
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_95892703a459f3ae.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">☺️</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">KaifanPan</a></h1>
+            <h2 class="site-description">心怀浪漫宇宙，也珍惜人间日常</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://space.bilibili.com/351183968'
+                        target="_blank"
+                        title="Bilibili"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-bilibili"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 10a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v6a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-6z" /><path d="M8 3l2 3" /><path d="M16 3l-2 3" /><path d="M9 13v-2" /><path d="M15 11v2" /></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/pkfbc2014'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/links/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一量子机器学习问题">一、《量子机器学习》问题</a>
+      <ol>
+        <li><a href="#1-交换测试swap-test的复杂度怎么算">1. 交换测试（Swap Test）的复杂度怎么算？</a></li>
+        <li><a href="#2-那跟经典算法-o2m-的对比合理吗">2. 那跟经典算法 $O(2^m)$ 的对比合理吗？</a></li>
+        <li><a href="#3-你的两个具体疑问">3. 你的两个具体疑问</a></li>
+      </ol>
+    </li>
+    <li><a href="#二alphafold介绍">二、AlphaFold介绍</a>
+      <ol>
+        <li><a href="#背景蛋白质折叠问题">背景：蛋白质折叠问题</a></li>
+        <li><a href="#alphafold2-做了什么">AlphaFold2 做了什么？</a>
+          <ol>
+            <li><a href="#它的核心能力是">它的核心能力是：</a></li>
+          </ol>
+        </li>
+        <li><a href="#alphafold2-的核心技术">AlphaFold2 的核心技术</a>
+          <ol>
+            <li><a href="#1-多序列比对msa-multiple-sequence-alignment">1. 多序列比对（MSA, Multiple Sequence Alignment）</a></li>
+            <li><a href="#2-transformer-网络">2. Transformer 网络</a></li>
+            <li><a href="#3-空间建模模块">3. 空间建模模块</a></li>
+            <li><a href="#4-循环优化结构">4. 循环优化结构</a></li>
+          </ol>
+        </li>
+        <li><a href="#效果如何">效果如何？</a></li>
+        <li><a href="#为什么重要">为什么重要？</a></li>
+        <li><a href="#alphafold2-和-alphafold-有何区别">AlphaFold2 和 AlphaFold 有何区别？</a></li>
+      </ol>
+    </li>
+    <li><a href="#三蛋白质聚类文献阅读">三、蛋白质聚类文献阅读</a>
+      <ol>
+        <li><a href="#1-首次大规模用-alphafold2-做结构聚类">1. <strong>首次大规模用 AlphaFold2 做结构聚类</strong></a></li>
+        <li><a href="#2-发现了一大批新功能的脱氨酶">2. <strong>发现了一大批新功能的脱氨酶</strong></a></li>
+        <li><a href="#3-开发了可以打包进单个病毒载体aav的精简cbe">3. <strong>开发了可以打包进单个病毒载体（AAV）的精简CBE</strong></a></li>
+        <li><a href="#4-解决了大豆中-cbe-编辑效率低的问题">4. <strong>解决了大豆中 CBE 编辑效率低的问题</strong></a></li>
+        <li><a href="#5-技术路线">5. <strong>技术路线</strong></a></li>
+        <li><a href="#6-用了什么聚类算法">6. 用了什么聚类算法？</a>
+          <ol>
+            <li><a href="#平均链接法average-linkage-clustering">平均链接法（Average-linkage clustering）</a></li>
+            <li><a href="#3d结构是怎么变成聚类输入的">3D结构是怎么变成聚类输入的？</a></li>
+          </ol>
+        </li>
+        <li><a href="#7-tm-score是怎样计算的">7. TM-score是怎样计算的？</a></li>
+      </ol>
+    </li>
+    <li><a href="#四decimeter-level-cooperative-direct-localization-with-ising-model-approach">四、Decimeter Level Cooperative Direct Localization With Ising Model Approach</a>
+      <ol>
+        <li><a href="#1-什么是-ising-模型">1. 什么是 Ising 模型？</a></li>
+        <li><a href="#2-为什么能用-ising-模型建模定位问题">2. 为什么能用 Ising 模型建模定位问题？</a></li>
+        <li><a href="#3-为什么-ell_1-范数会引入偏差">3. 为什么 $\ell_1$ 范数会引入偏差？</a></li>
+        <li><a href="#4-什么是-qubo-问题">4. 什么是 QUBO 问题？</a></li>
+        <li><a href="#5-怎样用-mcmc-和-da-高效求解">5. 怎样用 MCMC 和 DA 高效求解？</a></li>
+        <li><a href="#批注">批注</a>
+          <ol>
+            <li><a href="#1-the-idea-of-direct-localization-was-first-developed-in-20-in-that-work-the-authors-proposed-a-one-step-direct-localization-approach-based-on-estimating-the-eigenstructure-of-the-spectral-density-matrix-of-the-received-signal">1. The idea of direct localization was first developed in [20]. In that work, the authors proposed a one-step direct localization approach based on estimating the eigenstructure of the spectral density matrix of the received signal.</a></li>
+            <li><a href="#2-this-paper-proposes-a-novel-direct-localization-method-by-co-processing-the-received-signal-at-all-antenna-arrays-to-coprocess-data-we-take-advantage-of-the-fact-that-los-path-from-the-mobile-user-to-all-of-the-antenna-arrays-originates-from-a-common-location-in-the-area-nevertheless-non-los-nlos-paths-are-caused-by-reflection-from-different-objects-in-the-environment-making-them-to-have-a-random-nature-in-other-words-when-we-grid-the-area-the-strongest-signal-received-at-all-the-antenna-arrays-comes-from-one-of-the-grid-points-taking-this-fact-into-account-the-localization-problem-can-be-formulated-as-a-sparse-support-recovery-problem-therefore-we-employ-a-compressed-sensing-framework-for-our-direct-localization-approach-which-is-an-np-hard-optimization-problem-as-mentioned-before-l1-norm-relaxation-is-generally-used-to-make-this-problem-tractable-which-results-in-inherent-bias-to-the-solution-however-recently-authors-of-46-proposed-that-under-some-conditions-binary-approximation-for-l0-norm-optimization-problems-leads-to-optimal-support-in-addition-although-the-binary-approximation-is-still-nphard-there-exists-efficient-binary-programming-solvers-such-as-branch-and-bound-methods-and-annealing-based-methods">2. This paper proposes a novel direct localization method by co-processing the received signal at all antenna arrays. To coprocess data, we take advantage of the fact that LoS path from the mobile user to all of the antenna arrays originates from a common location in the area. Nevertheless, non-LoS (NLoS) paths are caused by reflection from different objects in the environment, making them to have a random nature. In other words, when we grid the area, the strongest signal received at all the antenna arrays comes from one of the grid points. Taking this fact into account, the localization problem can be formulated as a sparse support recovery problem. Therefore, we employ a compressed sensing framework for our direct localization approach which is an NP-hard optimization problem. As mentioned before, l1-norm relaxation is generally used to make this problem tractable which results in inherent bias to the solution. However, recently, authors of [46] proposed that under some conditions, binary approximation for l0-norm optimization problems leads to optimal support. In addition, although the binary approximation is still NPhard, there exists efficient binary programming solvers such as branch-and-bound methods and annealing-based methods.</a></li>
+            <li><a href="#3-这是一维ising问题还是二维ising为什么二维天线阵列可以用一维ising建模">3. 这是一维Ising问题还是二维Ising？为什么二维天线阵列可以用一维Ising建模？</a></li>
+            <li><a href="#4-crb介绍">4. CRB介绍</a></li>
+            <li><a href="#5-为什么要推crb">5. 为什么要推CRB？</a></li>
+            <li><a href="#6-model解释">6. Model解释</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/"></a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="20250828-星期四">20250828 星期四
+</h1><h2 id="一量子机器学习问题">一、《量子机器学习》问题
+</h2><p>量子计算的书这样写道：
+量子K均值聚类算法与经典K均值聚类算法主要的不同在于量子K均值聚类算法使用交换测试计算样本与质心距离，因此只比较该步骤的复杂度。对于量子算法来说，由于交换测试要运行$O(1/k)$次才能以误差$\varepsilon$得到距离，因此要使用交换测试计算$M=2^m$维样本|xi&gt;与质心|uk&gt;的距离$F(|xi&gt;, |uk&gt;)$，其复杂度为$O(1/\varepsilon)*O(m)=O(m/\varepsilon)$，如果使用经典算法计算M维向量的内积，其复杂度为$O(2^m)$。因此复杂度呈现指数降低。</p>
+<p>我对两个算法的时间复杂度有疑问，交换测试的时间复杂度不是根据逻辑门的个数来算的么？而且这只是交换测试部分，它根本没考虑制备量子态的过程，如果把制备量子态过程考虑上，时间复杂度是要高于经典时间复杂度。</p>
+<p>现在我想确认的是：交换测试的时间复杂度是不是$O(m/\varepsilon)$？而且$\varepsilon$是一个很小很小的数，$m/\varepsilon$不一定比$2^m$小啊。</p>
+<h3 id="1-交换测试swap-test的复杂度怎么算">1. 交换测试（Swap Test）的复杂度怎么算？
+</h3><ul>
+<li>
+<p><strong>交换测试本身</strong>的电路深度和逻辑门数量是<strong>O(m)</strong>，其中 $m=\log M$，因为你要对两个 $M=2^m$ 维量子态 $|x_i\rangle, |u_k\rangle$ 做受控交换，涉及到 $m$ 个量子比特的 SWAP 操作。</p>
+</li>
+<li>
+<p>但是 <strong>交换测试的输出是概率</strong>，不是精确值。要估计 $|\langle x_i | u_k \rangle|^2$ 到精度 $\epsilon$，需要重复采样 $\mathcal{O}(1/\epsilon^2)$ 次。</p>
+<ul>
+<li>
+<p>有些文献会写成 $\mathcal{O}(1/\epsilon)$，那是假设用更复杂的幅度估计（Amplitude Estimation）来加速采样。</p>
+</li>
+<li>
+<p>所以严格说，交换测试的复杂度应该是</p>
+$$
+    O\!\left(\frac{m}{\epsilon^2}\right) \quad \text{（普通采样）}
+    $$<p>或</p>
+$$
+    O\!\left(\frac{m}{\epsilon}\right) \quad \text{（用量子幅度估计）}
+    $$</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-那跟经典算法-o2m-的对比合理吗">2. 那跟经典算法 $O(2^m)$ 的对比合理吗？
+</h3><ul>
+<li>
+<p>经典情况下，计算两个 $M=2^m$ 维向量的内积，确实需要 $O(2^m)$ 步。</p>
+</li>
+<li>
+<p>量子情况下，交换测试只要 $O(m/\epsilon)$。<strong>前提条件</strong>是：</p>
+<ol>
+<li>量子态 $|x_i\rangle, |u_k\rangle$ 已经被准备好；</li>
+<li>你不计制备代价，只计算“测试”这一步的复杂度。</li>
+</ol>
+</li>
+</ul>
+<p>但现实中，<strong>制备量子态的成本是很高的</strong>：</p>
+<ul>
+<li>从经典数据加载到量子态（state preparation）通常需要 $O(2^m)$，除非你有某种“量子RAM”或数据本身有结构能高效编码。</li>
+<li>所以很多人批评这些量子机器学习论文，说它们忽略了 state preparation 的复杂度，导致看似指数加速，其实并不存在。</li>
+</ul>
+<h3 id="3-你的两个具体疑问">3. 你的两个具体疑问
+</h3><blockquote>
+<p>交换测试的时间复杂度是不是 $O(m/k)$？</p></blockquote>
+<p>严格说：</p>
+<ul>
+<li>如果用普通采样：$O(m/k^2)$</li>
+<li>如果用量子幅度估计：$O(m/k)$
+所以书里写的 $O(m/k)$ 是在假设用了幅度估计。</li>
+</ul>
+<blockquote>
+<p>而且 $k$ 是一个很小很小的数，$m/k$ 不一定比 $2^m$ 小啊？</p></blockquote>
+<p>对，这个你看得很清楚：</p>
+<ul>
+<li>当 $m$ 不是特别大，或者要求的精度很高（$k$ 很小），量子算法复杂度可能并没有比经典更优。</li>
+<li>只有在 $m$ 足够大而且你能高效制备量子态时，量子方法才显得有优势。</li>
+<li>否则，$m/k$ 可能远大于 $2^m$。</li>
+</ul>
+<p><strong>总结</strong>：</p>
+<ul>
+<li>交换测试的复杂度不是单纯 $O(m)$，而是 $O(m/\epsilon)$ 或 $O(m/\epsilon^2)$，取决于采样方式。</li>
+<li>书里写的 $O(m/k)$ 是基于幅度估计的乐观情况。</li>
+<li>如果把制备态的复杂度算上，往往比经典 $O(2^m)$ 还高。</li>
+<li>所以量子 K-means 真正的复杂度优势<strong>高度依赖于高效的量子态制备</strong>，否则这个“指数加速”并不成立。</li>
+</ul>
+<h2 id="二alphafold介绍">二、AlphaFold介绍
+</h2><p><strong>AlphaFold2</strong> 是由 DeepMind（谷歌旗下人工智能公司）开发的一种基于深度学习的蛋白质结构预测系统。它在 <strong>蛋白质折叠问题</strong> 上取得了突破性进展，能够根据蛋白质的氨基酸序列（即一级结构）准确预测其三维结构（即三级结构）。</p>
+<h3 id="背景蛋白质折叠问题">背景：蛋白质折叠问题
+</h3><ul>
+<li>蛋白质是由氨基酸组成的链条。</li>
+<li>这些链条会<strong>自行折叠成三维结构</strong>，这个结构决定了蛋白质的功能。</li>
+<li>准确预测蛋白质结构对药物开发、疾病研究、生物工程等非常关键。</li>
+<li>然而，传统方法（如X射线晶体学、冷冻电镜）耗时、昂贵。</li>
+</ul>
+<h3 id="alphafold2-做了什么">AlphaFold2 做了什么？
+</h3><p>AlphaFold2 在 2020 年的 <strong>国际蛋白质结构预测竞赛 CASP14</strong> 中取得惊人成功，预测精度在许多情况下接近实验结果。</p>
+<h4 id="它的核心能力是">它的核心能力是：
+</h4><blockquote>
+<p>从一个蛋白质的<strong>氨基酸序列</strong>出发，预测其<strong>原子级别精度的三维结构</strong>。</p></blockquote>
+<h3 id="alphafold2-的核心技术">AlphaFold2 的核心技术
+</h3><h4 id="1-多序列比对msa-multiple-sequence-alignment">1. 多序列比对（MSA, Multiple Sequence Alignment）
+</h4><ul>
+<li>利用大量相关蛋白质序列信息（从数据库中提取），挖掘共进化关系。</li>
+</ul>
+<h4 id="2-transformer-网络">2. Transformer 网络
+</h4><ul>
+<li>使用深度神经网络（变种的 Transformer）来提取蛋白质序列中的复杂关系。</li>
+</ul>
+<h4 id="3-空间建模模块">3. 空间建模模块
+</h4><ul>
+<li>模拟氨基酸残基之间的几何关系（距离、角度）并优化预测结构。</li>
+</ul>
+<h4 id="4-循环优化结构">4. 循环优化结构
+</h4><ul>
+<li>结构预测不是一次完成，而是通过反复优化（recycling）不断逼近真实结构。</li>
+</ul>
+<h3 id="效果如何">效果如何？
+</h3><p>在 CASP14 比赛中，AlphaFold2 在许多目标上达到 <strong>平均误差小于 1 Å（埃）</strong>，已经接近实验精度。</p>
+<h3 id="为什么重要">为什么重要？
+</h3><ul>
+<li><strong>基础科学</strong>：理解蛋白质功能、演化。</li>
+<li><strong>医疗应用</strong>：加快新药设计、新疗法开发。</li>
+<li><strong>开源贡献</strong>：DeepMind 与欧洲生物信息研究所（EBI）于 2021 年发布了 <strong>AlphaFold Protein Structure Database</strong>，预测了<strong>几乎所有人类蛋白质结构</strong>，并持续扩展到动植物等生物。</li>
+</ul>
+<h3 id="alphafold2-和-alphafold-有何区别">AlphaFold2 和 AlphaFold 有何区别？
+</h3><ul>
+<li><strong>AlphaFold（2018）</strong>：初代系统，准确率有限。</li>
+<li><strong>AlphaFold2（2020）</strong>：完全重写，更准确、更快，几乎解决了蛋白质折叠预测问题。</li>
+</ul>
+<h2 id="三蛋白质聚类文献阅读">三、蛋白质聚类文献阅读
+</h2><p>文献：<a class="link" href="./1.pdf" >Discovery of new deaminase functions by structure-based protein clustering</a></p>
+<ul>
+<li><strong>蛋白质功能预测</strong> 通常依赖于一维氨基酸序列信息（例如 HMM、motif）；</li>
+<li>然而，<strong>蛋白质真正的功能主要由其三维结构决定</strong>；</li>
+<li>随着 AlphaFold2 的出现，我们现在可以<strong>用 AI 精确预测蛋白质三维结构</strong>；</li>
+<li>该研究将 AlphaFold2 引入**蛋白质功能挖掘（protein mining）**流程，用于识别新的脱氨酶（deaminase）功能。</li>
+</ul>
+<p>用 <strong>AlphaFold2 预测蛋白质结构</strong> → 基于结构对蛋白质聚类 → 发现具备新功能的脱氨酶 → 应用于基因编辑。</p>
+<div class="table-wrapper"><table>
+  <thead>
+      <tr>
+          <th>术语</th>
+          <th>解释</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Deaminase（脱氨酶）</td>
+          <td>一类催化核苷酸脱氨反应的酶，能改变 DNA/RNA 中的碱基</td>
+      </tr>
+      <tr>
+          <td>AlphaFold2</td>
+          <td>DeepMind 开发的 AI 工具，可以从蛋白质序列预测出其三维结构</td>
+      </tr>
+      <tr>
+          <td>Base Editing（碱基编辑）</td>
+          <td>一种不切断 DNA 链的精准基因编辑技术，常用于 C→T 或 A→G 碱基替换</td>
+      </tr>
+      <tr>
+          <td>ssDNA / dsDNA</td>
+          <td>单链DNA / 双链DNA</td>
+      </tr>
+      <tr>
+          <td>CBE（Cytosine Base Editor）</td>
+          <td>细胞内把 C 转换为 T 的编辑系统，通常由脱氨酶 + Cas9 组成</td>
+      </tr>
+      <tr>
+          <td>AAV（腺相关病毒）</td>
+          <td>常用的基因治疗载体，用于把 DNA 运送到细胞内</td>
+      </tr>
+      <tr>
+          <td>Clade（进化支系）</td>
+          <td>指具有共同祖先的一组蛋白质</td>
+      </tr>
+      <tr>
+          <td>TM-score</td>
+          <td>评估蛋白质结构相似度的指标（类似于结构的“相似度打分”）</td>
+      </tr>
+  </tbody>
+</table></div>
+<h3 id="1-首次大规模用-alphafold2-做结构聚类">1. <strong>首次大规模用 AlphaFold2 做结构聚类</strong>
+</h3><ul>
+<li>选取 InterPro 数据库中 238 个具有脱氨酶功能的蛋白；</li>
+<li>用 AlphaFold2 预测其结构；</li>
+<li>使用结构相似度（而不是序列相似度）进行聚类，形成 20 个结构类（clades）；</li>
+<li><strong>效果比传统序列聚类方法更准确</strong>。</li>
+</ul>
+<h3 id="2-发现了一大批新功能的脱氨酶">2. <strong>发现了一大批新功能的脱氨酶</strong>
+</h3><ul>
+<li>新发现了一类“<strong>Sdd</strong>”（single-strand deaminase）蛋白；</li>
+<li>这些蛋白过去被误注释为“DddA-like”（双链脱氨酶），实际功能是作用于单链DNA；</li>
+<li>这些新脱氨酶用于构建新的 CBE，有更高效率和更好靶向性。</li>
+</ul>
+<h3 id="3-开发了可以打包进单个病毒载体aav的精简cbe">3. <strong>开发了可以打包进单个病毒载体（AAV）的精简CBE</strong>
+</h3><ul>
+<li>对传统酶（比如 APOBEC1）进行了“瘦身”（精简氨基酸数），构建出“mini-Sdd”；</li>
+<li>新的 mini-CBE 既小又高效，能用于小型病毒载体 AAV；</li>
+<li>成功实现在 <strong>人类细胞、老鼠神经细胞、稻米和大豆</strong> 中的高效基因编辑。</li>
+</ul>
+<h3 id="4-解决了大豆中-cbe-编辑效率低的问题">4. <strong>解决了大豆中 CBE 编辑效率低的问题</strong>
+</h3><ul>
+<li>过去的大豆编辑效率极低；</li>
+<li>用 mini-Sdd7 成功实现大豆中 <strong>67.4% 的编辑效率</strong>，大大超越旧方法；</li>
+<li>对农业基因改良具有重大价值。</li>
+</ul>
+<h3 id="5-技术路线">5. <strong>技术路线</strong>
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">蛋白质序列 → AlphaFold2 → 3D结构预测 → 聚类（结构相似性） → 实验验证功能 → 新CBE设计
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="6-用了什么聚类算法">6. 用了什么聚类算法？
+</h3><h4 id="平均链接法average-linkage-clustering">平均链接法（Average-linkage clustering）
+</h4><p>又称为 <strong>UPGMA（Unweighted Pair Group Method with Arithmetic Mean）</strong>，是一种常见的层次聚类方法。</p>
+<h4 id="3d结构是怎么变成聚类输入的">3D结构是怎么变成聚类输入的？
+</h4><p>输入：蛋白质氨基酸序列（来自 InterPro 数据库）</p>
+<ul>
+<li>用 <strong>AlphaFold2</strong> 预测出高可信度的蛋白质三维结构（.pdb 文件）</li>
+</ul>
+<p>比较结构：用 <strong>TM-score</strong> 算法做结构比对</p>
+<ul>
+<li>
+<p>使用 <strong>多结构比对（Multiple Structure Alignment, MSTA）</strong></p>
+</li>
+<li>
+<p>对每一对蛋白结构计算一个 <strong>归一化的 TM-score</strong></p>
+<ul>
+<li>TM-score 是一种衡量两个蛋白结构相似度的指标，范围在 [0, 1]，越高代表越相似</li>
+<li>与 RMSD 不同，TM-score 对蛋白大小不敏感，更适合跨蛋白家族比较</li>
+</ul>
+</li>
+</ul>
+<p>得到相似度矩阵（distance matrix）</p>
+<ul>
+<li>构建一个 <strong>238×238 的结构相似度矩阵</strong>（TM-score 越高表示越近）</li>
+</ul>
+<p>用该矩阵作为输入，执行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Average-linkage clustering（层次聚类）→ 生成结构分类树（dendrogram）
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>💡 <strong>输出是一个聚类树图</strong>，将蛋白质分成了 20 个结构类（clades），比传统序列聚类更有生物学意义。</p></blockquote>
+<p>可视化工具</p>
+<ul>
+<li>聚类树可视化：<strong>Figtree</strong></li>
+<li>结构比对可视化：<strong>PyMOL</strong></li>
+<li>结构预测工具：<strong>AlphaFold2 v2.2.0</strong></li>
+<li>相似度计算：<strong>TM-align</strong>（或论文中没有明确说工具名，但 TM-score 是通用标准）</li>
+</ul>
+<h3 id="7-tm-score是怎样计算的">7. TM-score是怎样计算的？
+</h3><p><strong>TM-score（Template Modeling Score）</strong> 是一个衡量两个蛋白质三维结构相似性的指标。</p>
+<ul>
+<li>范围是 <strong>0 到 1</strong>，越接近 1 越相似；</li>
+<li>和传统的 <strong>RMSD（均方根偏差）</strong> 不同，<strong>TM-score 对蛋白质长度不敏感</strong>；</li>
+<li>由 Zhang 和 Skolnick 在 2004 年提出，常用于蛋白质结构预测和比对评价。</li>
+</ul>
+<p>TM-score 的计算公式（简化版）</p>
+<p>给定两个蛋白质结构 A 和 B（通常是原子坐标，比如 Cα 原子）：</p>
+$$
+\text{TM-score} = \max\left\{ \frac{1}{L_{\text{target}}} \sum_{i=1}^{L_{\text{align}}} \frac{1}{1 + \left(\frac{d_i}{d_0(L_{\text{target}})}\right)^2} \right\}
+$$<p>公式说明：</p>
+<ul>
+<li>$L_{\text{target}}$：目标蛋白的长度</li>
+<li>$L_{\text{align}}$：对齐后匹配的残基数</li>
+<li>$d_i$：第 $i$ 对残基之间的距离（欧几里得距离）</li>
+<li>$d_0(L) = 1.24(L - 15)^{1/3} - 1.8$：归一化因子，依赖蛋白长度</li>
+</ul>
+<p>相比 RMSD，TM-score：</p>
+<ul>
+<li>
+<p>更重视“整体折叠结构是否相似”；</p>
+</li>
+<li>
+<p>不会因为局部误差放大而导致分数崩掉；</p>
+</li>
+<li>
+<p>通常认为：</p>
+<ul>
+<li>&gt; 0.5 → 结构相似（可能是同一家族）</li>
+<li>&lt; 0.2 → 基本无结构相关性</li>
+</ul>
+</li>
+</ul>
+<h2 id="四decimeter-level-cooperative-direct-localization-with-ising-model-approach">四、Decimeter Level Cooperative Direct Localization With Ising Model Approach
+</h2><p>文献：<a class="link" href="./2.pdf" >Decimeter Level Cooperative Direct Localization With Ising Model Approach</a></p>
+<h3 id="1-什么是-ising-模型">1. 什么是 Ising 模型？
+</h3><ul>
+<li><strong>起源</strong>：最早来自物理学，用来描述磁性材料中自旋（spin）的相互作用。</li>
+<li><strong>形式</strong>：每个“自旋”是一个二值变量 $x_i \in {-1, +1}$（或 ${0,1}$）。系统的能量写作：</li>
+</ul>
+$$
+E(x) = - \sum_i b_i x_i - \sum_{i,j} W_{ij} x_i x_j
+$$<p>其中：</p>
+<ul>
+<li>$b_i$：偏置项（单个自旋的倾向）。</li>
+<li>$W_{ij}$：相互作用权重。</li>
+<li>可以看作是耦合项 + 磁项</li>
+</ul>
+<p><strong>物理意义</strong>：系统会倾向于寻找使能量最小的配置。</p>
+<p><strong>数学意义</strong>：这是一个二值优化问题（binary optimization）。</p>
+<h3 id="2-为什么能用-ising-模型建模定位问题">2. 为什么能用 Ising 模型建模定位问题？
+</h3><p>在论文里，定位被转化为 <strong>稀疏重建问题</strong>：</p>
+<ul>
+<li>假设在一个网格上只有少数点可能是信号源位置。</li>
+<li>于是形成了一个 <strong>稀疏向量</strong>，大部分为 0，只有少数为 1（对应可能的位置）。</li>
+</ul>
+<p>这个优化目标（最小化 $\ell_0$ 范数 + 拟合误差）可以写成一个 <strong>二次二值优化问题</strong>。</p>
+<ul>
+<li>$\ell_0$ 范数相当于惩罚“有多少个 1”；</li>
+<li>拟合误差相当于二次项。</li>
+</ul>
+<p>把这些项整理后，恰好符合 Ising 模型的能量形式，所以，定位问题就能转化为 Ising 优化问题。</p>
+<h3 id="3-为什么-ell_1-范数会引入偏差">3. 为什么 $\ell_1$ 范数会引入偏差？
+</h3><ul>
+<li><strong>$\ell_0$</strong> 范数：直接计数非零元素（准确表达稀疏性），但优化是 NP-hard。</li>
+<li><strong>$\ell_1$</strong> 范数：常作为 $\ell_0$ 的凸松弛，因为它可解性好。</li>
+</ul>
+<p><strong>问题</strong>：</p>
+<ul>
+<li>$\ell_1$ 会“惩罚幅度”，导致估计的系数偏小（收缩效应 shrinkage）。</li>
+<li>在定位场景下，会把真实信号的位置估计“拉向零”，造成 <strong>位置偏差</strong>。</li>
+</ul>
+<p>而 <strong>$\ell_0$</strong> 只管“有无”，不管幅度大小，所以不会有这种系统性偏差。</p>
+<h3 id="4-什么是-qubo-问题">4. 什么是 QUBO 问题？
+</h3><ul>
+<li><strong>定义</strong>：Quadratic Unconstrained Binary Optimization</li>
+</ul>
+$$
+\min_{x \in \{0,1\}^n} x^T Q x
+$$<ul>
+<li>和 Ising 模型本质等价，只是变量取值不同（QUBO 用 ${0,1}$，Ising 用 ${-1,1}$）。</li>
+<li>常用于组合优化、图问题、调度问题，以及量子计算中的 <strong>量子退火</strong>。</li>
+</ul>
+<h3 id="5-怎样用-mcmc-和-da-高效求解">5. 怎样用 MCMC 和 DA 高效求解？
+</h3><ol>
+<li>
+<p><strong>MCMC（马尔科夫链蒙特卡洛）</strong></p>
+<ul>
+<li>
+<p>用随机采样的方法近似求解最优解。</p>
+</li>
+<li>
+<p>在 Ising 模型里常用 <strong>Metropolis-Hastings</strong> 或 <strong>Gibbs Sampling</strong>：</p>
+<ul>
+<li>随机翻转一个自旋，看能量变化 ΔE。</li>
+<li>如果能量下降，就接受；如果上升，则以概率 $\exp(-\beta \Delta E)$ 接受。</li>
+<li>反复迭代，系统逐渐“降温”到低能量解（接近全局最优）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>DA（Digital Annealer, 富士通的数字退火器）</strong></p>
+<ul>
+<li>是一种专门硬件（类量子退火机，但基于 CMOS）。</li>
+<li>可以并行模拟大量自旋翻转，大大加快收敛。</li>
+<li>对 QUBO/Ising 这种大规模二值优化非常高效。</li>
+</ul>
+</li>
+</ol>
+<h3 id="批注">批注
+</h3><h4 id="1-the-idea-of-direct-localization-was-first-developed-in-20-in-that-work-the-authors-proposed-a-one-step-direct-localization-approach-based-on-estimating-the-eigenstructure-of-the-spectral-density-matrix-of-the-received-signal">1. The idea of direct localization was first developed in [20]. In that work, the authors proposed a one-step direct localization approach based on estimating the eigenstructure of the spectral density matrix of the received signal.
+</h4><p>基于密度矩阵可以哦。</p>
+<h4 id="2-this-paper-proposes-a-novel-direct-localization-method-by-co-processing-the-received-signal-at-all-antenna-arrays-to-coprocess-data-we-take-advantage-of-the-fact-that-los-path-from-the-mobile-user-to-all-of-the-antenna-arrays-originates-from-a-common-location-in-the-area-nevertheless-non-los-nlos-paths-are-caused-by-reflection-from-different-objects-in-the-environment-making-them-to-have-a-random-nature-in-other-words-when-we-grid-the-area-the-strongest-signal-received-at-all-the-antenna-arrays-comes-from-one-of-the-grid-points-taking-this-fact-into-account-the-localization-problem-can-be-formulated-as-a-sparse-support-recovery-problem-therefore-we-employ-a-compressed-sensing-framework-for-our-direct-localization-approach-which-is-an-np-hard-optimization-problem-as-mentioned-before-l1-norm-relaxation-is-generally-used-to-make-this-problem-tractable-which-results-in-inherent-bias-to-the-solution-however-recently-authors-of-46-proposed-that-under-some-conditions-binary-approximation-for-l0-norm-optimization-problems-leads-to-optimal-support-in-addition-although-the-binary-approximation-is-still-nphard-there-exists-efficient-binary-programming-solvers-such-as-branch-and-bound-methods-and-annealing-based-methods">2. This paper proposes a novel direct localization method by co-processing the received signal at all antenna arrays. To coprocess data, we take advantage of the fact that LoS path from the mobile user to all of the antenna arrays originates from a common location in the area. Nevertheless, non-LoS (NLoS) paths are caused by reflection from different objects in the environment, making them to have a random nature. In other words, when we grid the area, the strongest signal received at all the antenna arrays comes from one of the grid points. Taking this fact into account, the localization problem can be formulated as a sparse support recovery problem. Therefore, we employ a compressed sensing framework for our direct localization approach which is an NP-hard optimization problem. As mentioned before, l1-norm relaxation is generally used to make this problem tractable which results in inherent bias to the solution. However, recently, authors of [46] proposed that under some conditions, binary approximation for l0-norm optimization problems leads to optimal support. In addition, although the binary approximation is still NPhard, there exists efficient binary programming solvers such as branch-and-bound methods and annealing-based methods.
+</h4><p>为什么这个过程是NP-hard的？难道0和1的阈值难以选取么？是因为LoS和NLoS难以区分，对吧？</p>
+<h4 id="3-这是一维ising问题还是二维ising为什么二维天线阵列可以用一维ising建模">3. 这是一维Ising问题还是二维Ising？为什么二维天线阵列可以用一维Ising建模？
+</h4><h4 id="4-crb介绍">4. CRB介绍
+</h4><p>CRB 指的是 Cramér–Rao Bound（克拉美–罗下界）。</p>
+<ul>
+<li>
+<p>在统计学和信号处理里，CRB 给出了 <strong>任何无偏估计器的方差下界</strong>。</p>
+</li>
+<li>
+<p>也就是说：</p>
+$$
+  \mathrm{Var}(\hat{\theta}) \geq \frac{1}{I(\theta)}
+  $$<p>其中 $I(\theta)$ 是 Fisher 信息量（Fisher Information）。</p>
+</li>
+<li>
+<p>换句话说，不管你用什么算法，只要是无偏的，精度不可能超过 CRB。</p>
+</li>
+</ul>
+<p>这篇文章要解决的是 <strong>定位问题</strong>，估计的是用户的位置坐标 $(x_u, y_u)$。</p>
+<ul>
+<li>作者推导了基于他们信号模型的 <strong>Fisher 信息矩阵 (FIM)</strong>，然后反推出 CRB。</li>
+<li>CRB 代表了 <strong>在给定信道、噪声、天线数等条件下，理论上能达到的最佳定位精度</strong>。</li>
+</ul>
+<h4 id="5-为什么要推crb">5. 为什么要推CRB？
+</h4><ul>
+<li><strong>对比用</strong>：把他们提出的 Ising 模型方法的实际误差（RMSE）和 CRB 对比。</li>
+<li>如果算法的 RMSE 越接近 CRB，说明方法越接近理论最优。</li>
+<li>在文章的结果部分（Fig.10），他们发现：随着信噪比（SNR）升高，他们的算法误差 <strong>逐渐逼近 CRB</strong>，说明性能很强。</li>
+</ul>
+<h4 id="6-model解释">6. Model解释
+</h4><ul>
+<li>
+<p>室内有一个 <strong>WiFi 用户（信号源）</strong>，它发射一个窄带信号。</p>
+</li>
+<li>
+<p>周围有 <strong>多个接入点（Access Points, AP）</strong>，每个接入点上装有 <strong>天线阵列（通常是一排 ULA，Uniform Linear Array）</strong>。</p>
+</li>
+<li>
+<p>信号从用户传到各个 AP 的时候，会经历 <strong>多径传播</strong>：</p>
+<ul>
+<li>一条是直达路径（LoS，Line of Sight）；</li>
+<li>其他路径是反射、散射后的信号（NLoS）。</li>
+</ul>
+</li>
+</ul>
+<p>信号接收模型：</p>
+<p>每个接入点接收到的信号可以写成：</p>
+$$
+y_p = \sum_{l=1}^L s_{lp} \cdot a(\theta_{lp}, r_{lp}) + n_p
+$$<p>翻译一下：</p>
+<ul>
+<li>$y_p$：第 $p$ 个接入点的接收信号（是一个向量，因为有阵列）。</li>
+<li>$\sum_{l=1}^L$：有 $L$ 条路径（1 条直达 + 多条反射）。</li>
+<li>$s_{lp}$：第 $l$ 条路径的复数幅度（包含衰减和相位）。</li>
+<li>$a(\theta_{lp}, r_{lp})$：<strong>阵列流形向量</strong>，描述“信号从某个角度 $\theta$、某个距离 $r$ 进来时，天线阵列接收到的相位/幅度模式”。</li>
+<li>$n_p$：噪声。</li>
+</ul>
+<p>换句话说，接收信号就是：<strong>直达路径 + 一堆反射 + 噪声</strong>。</p>
+<p>LoS 的特殊性</p>
+<ul>
+<li>对所有 AP 来说，<strong>直达路径都来自同一个位置（用户位置）</strong>。</li>
+<li>但是 NLoS 是由不同墙壁、桌子、物体反射来的，每个 AP 的反射情况都不一样，<strong>不共享</strong>。</li>
+</ul>
+<p>这就是为什么联合处理信号（co-processing）有用：<strong>可以利用所有 AP 的 LoS 一致性来锁定真实位置</strong>。</p>
+<p>网格化思想</p>
+<ul>
+<li>把整个区域划分成很多 <strong>候选位置网格点</strong>。</li>
+<li>对每个网格点，可以计算出如果用户在这里，AP 应该接收到什么样的信号模式（即阵列流形向量）。</li>
+<li>然后用实际接收到的信号和这些“字典”比对 → 找到最匹配的网格点 → 就是用户位置。</li>
+</ul>
+<p>由于真实用户只在一个位置，所以在一大堆网格点中，只有极少数是“有效的”，这就是 <strong>稀疏性</strong>。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2014 - 
+        
+        2025 KaifanPan
+    </section>
+    
+    <section class="powerby">
+        
+            用代码记录生活，用文字温暖世界 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.c16f5c9cc1810986dd52f9be8f142929a1f550d9022a8176b409693f4d663250.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
